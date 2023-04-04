@@ -42,6 +42,14 @@ INSERT INTO orders (product_name, price) VALUES ('T-shirt', 19.99);
 #скрипт прикреплён отдельным файлом
 nano /etc/cron.hourly/mysql_backup.sh
 
+#Здесь мы используем файл конфигурации .my.cnf, который находится в домашней директории пользователя root и содержит данные для подключения к базе данных. 
+#Файл .my.cnf имеет следующее содержимое:
+
+[client]
+user=root
+password=password
+
+
 5. Настроить синхронизацию через rsynс в папку /opt/store/mysql на ВМ store
 #Установим rsync 
 sudo apt install rsync

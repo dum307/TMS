@@ -12,5 +12,8 @@ fi
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 FILENAME="db_backup_$DATE.sql"
 
+# Подключаемся к базе данных с помощью файла конфигурации
+MYSQL_CONFIG_FILE="/root/.my.cnf"
+
 # Команда для создания бэкапа базы данных
 mysqldump testdb > $BACKUP_DIR/$FILENAME

@@ -1,0 +1,126 @@
+1. Установим репозиторий mysql
+#Для этого перейдём по ссылке https://dev.mysql.com/downloads/repo/apt/ и загрузим mysql-apt-config_0.8.24-1_all.deb пакет и установим его.
+
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.24-1_all.deb
+dpkg -i mysql-apt-config_0.8.24-1_all.deb
+
+#Установим mysql-server
+apt update && apt install mysql-server -y
+
+2. Создадим базу testdb
+mysql -u root -ppassword
+mysql> create database testdb;
+
+3. Создадим таблицы users и orders и заполним их данными
+mysql> use testdb;
+Database changed
+mysql> create table users (
+    -> id INT NOT NULL AUTO_INCREMENT,
+    -> name VARCHAR(50) NOT NULL,
+    -> email VARCHAR(100) NOT NULL,
+    -> PRIMARY KEY (id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert users (name, email) values ('John', 'john@example.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert users (name, email) values ('Jack', 'jack@example.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CREATE TABLE orders (
+    ->     order_id INT NOT NULL AUTO_INCREMENT,
+    ->     product_name VARCHAR(100) NOT NULL,
+    ->     price DECIMAL(10,2) NOT NULL,
+    ->     PRIMARY KEY (order_id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+INSERT INTO orders (product_name, price) VALUES ('T-shirt', 19.99);
+
+4. Создадим скрипт в директории /etc/cron.hourly/ под именем mysql_backup.sh, чтобы он выполнялся раз в час
+#скрипт прикреплён отдельным файлом
+nano /etc/cron.hourly/mysql_backup.sh
+
+#Здесь мы используем файл конфигурации .my.cnf, который находится в домашней директории пользователя root и содержит данные для подключения к базе данных. 
+#Файл .my.cnf имеет следующее содержимое:
+
+[client]
+user=root
+password=password
+
+
+5. Настроить синхронизацию через rsynс в папку /opt/store/mysql на ВМ store
+#Установим rsync 
+sudo apt install rsync
+
+#Конфигурация rsync будет выглядеть следующим образом
+#Используемые ключи
+# -a - Режим архивирования, когда сохраняются все атрибуты оригинальных файлов
+# -v - Выводить подробную информацию о процессе копирования
+# -z - Сжимать файлы перед передачей;
+# store - имя виртуальной машины store
+
+rsync -avz /opt/mysql_backup/ store:/opt/store/mysql
+
+#если необходимо автоматизировать работу rsync, можно создать кронджоб. Также есть возможность настройки rsync-демона
+
+6. Проверка восстановления из бэкапа
+#Удалим базу данных
+mysql> DROP DATABASE testdb;
+
+#Создадим базу данных с тем же именем testdb
+mysql> create database testdb;
+
+#Результат выполнения скрипта
+https://ru.paste.pics/MXRHJ
+
+#Восстановим базу данных из бэкапа
+mysql -u root -p testdb < /opt/mysql_backup/dbname_<DATE>.sql
+
+#Убедимся, что база восстановилась
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdb             |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use testdb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_testdb |
++------------------+
+| orders           |
+| users            |
++------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+--------------+-------+
+| order_id | product_name | price |
++----------+--------------+-------+
+|        1 | T-shirt      | 19.99 |
++----------+--------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from users;
++----+------+------------------+
+| id | name | email            |
++----+------+------------------+
+|  1 | John | john@example.com |
+|  2 | Jack | Jack@example.com |
++----+------+------------------+
+2 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,31 @@
+---
+# tasks file for nginx_deploy
+- name: Uptime and avg
+  ansible.builtin.command: uptime
+  register: uptime
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Setup nginx vhost
+  template:
+    src: site.conf.tpl
+    dest: "{{dest_vhost}}"
+
+- name: create directory /etc/nginx/ssl
+  file:
+    path: "{{dest_ssl}}"
+    state: directory
+
+- name: generate key and crt
+  shell: '/usr/bin/openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout {{ dest_ssl }}{{ ansible_hostname }}.key -out {{ dest_ssl }}{{ ansible_hostname }}.crt -subj "/CN={{ ansible_hostname }}.local" -addext "subjectAltName=DNS:www.{{ ansible_hostname }}.local,DNS:{{ ansible_hostname }}.local,IP:{{ ansible_host }}"'
+
+- name: Copy homepage to web server
+  template:
+    src: index.html.tpl
+    dest: "{{dest_index}}"
+  notify: restart nginx
+

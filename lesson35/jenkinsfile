@@ -1,0 +1,29 @@
+pipeline{
+    agent { label 'ansible' }
+    environment{
+        TG_TOKEN = credentials('TG_TOKEN')
+        TG_CHAT_ID = credentials('TG_CHAT_ID')
+    }
+    stages{
+        stage('SCM Checkuot'){
+            steps{
+                git branch: 'lesson35', url: 'https://github.com/dum307/TMS.git'
+            }
+        }
+        stage('Execute Ansible'){
+            steps{
+                ansiblePlaybook become: true, credentialsId: '2803e25b-d77e-4610-80a6-a1a443348557', disableHostKeyChecking: true, installation: 'ansible', inventory: 'lesson35/inventory.ini', playbook: 'lesson35/nginx_role.yml'
+            }
+        }    
+    }
+        post {
+        success {
+            sh '''
+            curl "https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}" --data-urlencode "text=Ansible Playbook Success"
+            '''
+        }
+        failure {
+            sh 'curl "https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}" --data-urlencode "text=Ansible Playbook Failed"'
+        }
+    }
+}

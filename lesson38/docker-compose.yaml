@@ -22,7 +22,7 @@ services:
       - GITHUB_PAT
     volumes:
       # - jenkins-data:/var/jenkins_home
-      - /home/st-admin/TMS/lesson38/casc_configs:/var/jenkins_home/casc_configs/
+      - ~/TMS/lesson38/casc_configs:/var/jenkins_home/casc_configs/
     networks:
       - jenkins-network
   jenkins-docker:
@@ -59,4 +59,4 @@ networks:
 
 secrets:
   GITHUB_PAT:
-    file: /home/st-admin/github_pat
+    file: ~/.token

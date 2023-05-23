@@ -1,0 +1,67 @@
+@Library(['general', 'deploy']) _
+
+pipeline {
+    agent { label 'built-in' }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        disableConcurrentBuilds()
+        timestamps()
+        ansiColor('xtrem')
+    }
+
+    environment {
+        IMAGES_FILE = '/tmp/pushedImages.json'
+        GIT_REPO_OWNER = 'dum307'
+        GIT_REPO_NAME = 'TMS'
+        DOCKER_REGISTRY = "ghcr.io/${GIT_REPO_OWNER.toLowerCase()}"
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    if (fileExists('/tmp/pushedImages.json')) {
+                        pushedImages = readJSON file: IMAGES_FILE
+                        println (pushedImages)
+                        log.info "Branch: ${env.BRANCH_NAME}"
+                        try{
+                            env.TAG = sh(script: 'git describe --tags --abbrev=0 --exact-match HEAD', returnStdout: true).trim()
+                        } catch(err){
+                            println ("Tag is empty: ${err.getMessage()}")
+                            env.TAG = 'latest'
+                        }
+                        println (env.TAG)
+                        SKIP_DEPLOY = false
+                    } else {
+                        SKIP_DEPLOY = true
+                    }
+                    println (SKIP_DEPLOY)
+                }
+            }
+        }
+
+        stage ('Parallel deploy image') {
+            when { expression { BRANCH_NAME == 'lesson38-1' && SKIP_DEPLOY == false } }
+            steps {
+                script {
+                    println(pushedImages)
+                    Integer PARALLEL_EXECUTE_COUNT = 2
+                    deployImageStages = stagePrepare(pushedImages, PARALLEL_EXECUTE_COUNT)
+                    deployImageStages.each { stage ->
+                        parallel stage
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+        always {
+            sh """
+                rm -f /tmp/pushedImages.json
+            """
+            cleanWs()
+        }
+    }
+}

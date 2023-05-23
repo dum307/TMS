@@ -1,7 +1,7 @@
-@Library(['general', 'build_deploy']) _
+@Library(['general', 'build']) _
 
 pipeline {
-    agent { label 'ansible' }
+    agent { label 'built-in' }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
@@ -78,7 +78,7 @@ pipeline {
         }
 
         stage ('Parallel create image') {
-            when { expression { BRANCH_NAME == 'lesson38' } }
+            when { expression { BRANCH_NAME == 'lesson38-1' } }
             steps {
                 script {
                     Integer PARALLEL_EXECUTE_COUNT = 2
@@ -91,7 +91,7 @@ pipeline {
         }
 
         stage ('Push image') {
-            when { expression { BRANCH_NAME == 'lesson38' } }
+            when { expression { BRANCH_NAME == 'lesson38-1' } }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-http', passwordVariable: 'pass', usernameVariable: 'user')]) {
@@ -102,21 +102,18 @@ pipeline {
                         pushedImages.put(app, path)
                     }
                     println(pushedImages)
+                    // Запись запущенных имеджей в json файл, чтобы можно было прочитать в другом пайплайне
+                    writeJSON(file: '/tmp/pushedImages.json', json: pushedImages)
+                    pushedapps = readJSON file: '/tmp/pushedImages.json'
+                    println(pushedapps)
                 }
             }
         }
 
         stage ('Parallel deploy image') {
-            when { expression { BRANCH_NAME == 'lesson38' } }
+            when { expression { BRANCH_NAME == 'lesson38-1' } }
             steps {
-                script {
-                    println(pushedImages)
-                    Integer PARALLEL_EXECUTE_COUNT = 2
-                    deployImageStages = stagePrepare('deploy', pushedImages, PARALLEL_EXECUTE_COUNT)
-                    deployImageStages.each { stage ->
-                        parallel stage
-                    }
-                }
+                build job: "Lesson38/CD/lesson38-1"
             }
         }
 

@@ -1,0 +1,721 @@
+Branch indexing
+Connecting to https://api.github.com using dum307307@gmail.com/******
+Obtained lesson38/Jenkinsfile-multi-ci from 67e07ca72812200314b79b4f4063b35efdb2fc32
+Loading library general@lesson38
+Attempting to resolve lesson38 from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git ls-remote -- https://github.com/dum307/TMS.git # timeout=10
+Found match: refs/heads/lesson38 revision 67e07ca72812200314b79b4f4063b35efdb2fc32
+The recommended git tool is: NONE
+using credential github-http
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Lesson38_CI_lesson38@libs/40e04719abb082dd29af1b446f1690e00713e510077b031d1cb52211bfde4d1e/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+ > git rev-list --no-walk 153536374a9139ccdb5cd31203c5af2dc96bfe08 # timeout=10
+Loading library build@lesson38
+Attempting to resolve lesson38 from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git ls-remote -- https://github.com/dum307/TMS.git # timeout=10
+Found match: refs/heads/lesson38 revision 67e07ca72812200314b79b4f4063b35efdb2fc32
+The recommended git tool is: NONE
+using credential github-http
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Lesson38_CI_lesson38@libs/40e04719abb082dd29af1b446f1690e00713e510077b031d1cb52211bfde4d1e/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/Lesson38_CI_lesson38
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential github-http
+Cloning the remote Git repository
+Cloning repository https://github.com/dum307/TMS.git
+ > git init /var/jenkins_home/workspace/Lesson38_CI_lesson38 # timeout=10
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] ansiColor
+[Pipeline] {
+[2023-05-26T13:35:25.598Z] 
+[Pipeline] stage
+[Pipeline] { (Prepare)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2023-05-26T13:35:25.968Z] + git show -s --format=%s
+[Pipeline] echo
+[2023-05-26T13:35:26.011Z] [1;31mERROR: Failed: begin 0, end -1, length 8[0m
+[Pipeline] readJSON
+[Pipeline] echo
+[2023-05-26T13:35:26.072Z] [1;32mINFO: Branch: lesson38[0m
+[Pipeline] echo
+[2023-05-26T13:35:26.080Z] [1;32mINFO: PR ID: [0m
+[Pipeline] sh
+[2023-05-26T13:35:26.340Z] + git describe --tags --abbrev=0 --exact-match HEAD
+[2023-05-26T13:35:26.341Z] fatal: no tag exactly matches '67e07ca72812200314b79b4f4063b35efdb2fc32'
+[Pipeline] echo
+[2023-05-26T13:35:26.363Z] Tag is empty: script returned exit code 128
+[Pipeline] echo
+[2023-05-26T13:35:26.372Z] latest
+[Pipeline] echo
+[2023-05-26T13:35:26.377Z] Build apps: [hello-world:simple-java-project/apps/hello-world, hello-python:simple-java-project/apps/hello-python, hello-docker:simple-java-project/apps/hello-docker]
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Parallel build)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] parallel
+[Pipeline] { (Branch: hello-world)
+[Pipeline] { (Branch: hello-python)
+[Pipeline] { (Branch: hello-docker)
+[Pipeline] stage
+[Pipeline] { (hello-world)
+[Pipeline] stage
+[Pipeline] { (hello-python)
+[Pipeline] stage
+[Pipeline] { (hello-docker)
+[Pipeline] lock
+[2023-05-26T13:35:26.649Z] Trying to acquire lock on [Build-lock-0]
+[2023-05-26T13:35:26.650Z] Resource [Build-lock-0] did not exist. Created.
+[2023-05-26T13:35:26.650Z] Lock acquired on [Build-lock-0]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:35:26.659Z] Trying to acquire lock on [Build-lock-1]
+[2023-05-26T13:35:26.660Z] Resource [Build-lock-1] did not exist. Created.
+[2023-05-26T13:35:26.660Z] Lock acquired on [Build-lock-1]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:35:26.669Z] Trying to acquire lock on [Build-lock-0]
+[2023-05-26T13:35:26.669Z] Found 0 available resource(s). Waiting for correct amount: 1.
+[2023-05-26T13:35:26.670Z] [Build-lock-0] is locked by Lesson38 » CI » lesson38 #12, waiting...
+[Pipeline] dir
+[2023-05-26T13:35:26.693Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-world
+[Pipeline] {
+[Pipeline] dir
+[2023-05-26T13:35:26.698Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-python
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
+[2023-05-26T13:35:26.979Z] + docker rm -f hello-world
+[2023-05-26T13:35:26.979Z] Error response from daemon: No such container: hello-world
+[2023-05-26T13:35:26.979Z] + [ -d target]
+[2023-05-26T13:35:26.979Z] /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-world@tmp/durable-68f54b65/script.sh: 3: [: missing ]
+[2023-05-26T13:35:26.979Z] + mkdir target
+[2023-05-26T13:35:26.979Z] + docker build -t hello-world -f Dockerfile-build .
+[2023-05-26T13:35:26.991Z] + docker rm -f hello-python
+[2023-05-26T13:35:26.991Z] Error response from daemon: No such container: hello-python
+[2023-05-26T13:35:26.991Z] + [ -d target]
+[2023-05-26T13:35:26.991Z] /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-python@tmp/durable-4d08db12/script.sh: 3: [: missing ]
+[2023-05-26T13:35:26.991Z] + mkdir target
+[2023-05-26T13:35:26.991Z] + docker build -t hello-python -f Dockerfile-build .
+[2023-05-26T13:35:27.230Z] #1 [internal] load .dockerignore
+[2023-05-26T13:35:27.230Z] #1 transferring context: 2B done
+[2023-05-26T13:35:27.230Z] #1 DONE 0.0s
+[2023-05-26T13:35:27.230Z] 
+[2023-05-26T13:35:27.230Z] #2 [internal] load build definition from Dockerfile-build
+[2023-05-26T13:35:27.230Z] #2 transferring dockerfile: 140B 0.0s done
+[2023-05-26T13:35:27.230Z] #2 DONE 0.0s
+[2023-05-26T13:35:27.230Z] 
+[2023-05-26T13:35:27.230Z] #3 [internal] load metadata for docker.io/library/maven:3.8.6-openjdk-11
+[2023-05-26T13:35:27.242Z] #1 [internal] load .dockerignore
+[2023-05-26T13:35:27.242Z] #1 transferring context: 2B done
+[2023-05-26T13:35:27.242Z] #1 DONE 0.0s
+[2023-05-26T13:35:27.242Z] 
+[2023-05-26T13:35:27.242Z] #2 [internal] load build definition from Dockerfile-build
+[2023-05-26T13:35:27.242Z] #2 transferring dockerfile: 140B done
+[2023-05-26T13:35:27.242Z] #2 DONE 0.0s
+[2023-05-26T13:35:27.242Z] 
+[2023-05-26T13:35:27.242Z] #3 [internal] load metadata for docker.io/library/maven:3.8.6-openjdk-11
+[2023-05-26T13:35:28.141Z] #3 DONE 0.9s
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #4 [1/4] FROM docker.io/library/maven:3.8.6-openjdk-11@sha256:805f366910aea2a91ed263654d23df58bd239f218b2f9562ff51305be81fa215
+[2023-05-26T13:35:28.141Z] #4 DONE 0.0s
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #5 [internal] load build context
+[2023-05-26T13:35:28.141Z] #5 transferring context: 4.31kB done
+[2023-05-26T13:35:28.141Z] #5 DONE 0.0s
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #6 [2/4] WORKDIR /app
+[2023-05-26T13:35:28.141Z] #6 CACHED
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #7 [3/4] COPY . .
+[2023-05-26T13:35:28.141Z] #7 CACHED
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #8 [4/4] RUN mvn -B -DskipTests clean package
+[2023-05-26T13:35:28.141Z] #8 CACHED
+[2023-05-26T13:35:28.141Z] 
+[2023-05-26T13:35:28.141Z] #9 exporting to image
+[2023-05-26T13:35:28.141Z] #9 exporting layers done
+[2023-05-26T13:35:28.141Z] #9 writing image sha256:3136b2c4fab4e8c851f6870b79fed97f549ea7b6acc80515ee23f60d6d2ae6ce done
+[2023-05-26T13:35:28.141Z] #9 naming to docker.io/library/hello-world done
+[2023-05-26T13:35:28.141Z] #9 DONE 0.0s
+[2023-05-26T13:35:28.141Z] + docker run --name hello-world hello-world mvn test
+[2023-05-26T13:35:28.153Z] #3 DONE 0.9s
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #4 [1/4] FROM docker.io/library/maven:3.8.6-openjdk-11@sha256:805f366910aea2a91ed263654d23df58bd239f218b2f9562ff51305be81fa215
+[2023-05-26T13:35:28.153Z] #4 DONE 0.0s
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #5 [internal] load build context
+[2023-05-26T13:35:28.153Z] #5 transferring context: 4.32kB done
+[2023-05-26T13:35:28.153Z] #5 DONE 0.0s
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #6 [2/4] WORKDIR /app
+[2023-05-26T13:35:28.153Z] #6 CACHED
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #7 [3/4] COPY . .
+[2023-05-26T13:35:28.153Z] #7 CACHED
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #8 [4/4] RUN mvn -B -DskipTests clean package
+[2023-05-26T13:35:28.153Z] #8 CACHED
+[2023-05-26T13:35:28.153Z] 
+[2023-05-26T13:35:28.153Z] #9 exporting to image
+[2023-05-26T13:35:28.153Z] #9 exporting layers done
+[2023-05-26T13:35:28.153Z] #9 writing image sha256:c5ff06341a93329fd736d08eb839ef69cad5d20628d3a7740e9ea4051c858278 done
+[2023-05-26T13:35:28.153Z] #9 naming to docker.io/library/hello-python done
+[2023-05-26T13:35:28.153Z] #9 DONE 0.0s
+[2023-05-26T13:35:28.153Z] + docker run --name hello-python hello-python mvn test
+[2023-05-26T13:35:32.264Z] [INFO] Scanning for projects...
+[2023-05-26T13:35:32.264Z] [INFO] 
+[2023-05-26T13:35:32.264Z] [INFO] ----------------------< com.mycompany.app:my-app >----------------------
+[2023-05-26T13:35:32.264Z] [INFO] Building my-app 1.0-SNAPSHOT
+[2023-05-26T13:35:32.264Z] [INFO] --------------------------------[ jar ]---------------------------------
+[2023-05-26T13:35:32.264Z] [INFO] 
+[2023-05-26T13:35:32.264Z] [INFO] --- maven-enforcer-plugin:3.1.0:enforce (enforce-maven) @ my-app ---
+[2023-05-26T13:35:32.276Z] [INFO] Scanning for projects...
+[2023-05-26T13:35:32.276Z] [INFO] 
+[2023-05-26T13:35:32.276Z] [INFO] ----------------------< com.mycompany.app:my-app >----------------------
+[2023-05-26T13:35:32.276Z] [INFO] Building my-app 1.0-SNAPSHOT
+[2023-05-26T13:35:32.276Z] [INFO] --------------------------------[ jar ]---------------------------------
+[2023-05-26T13:35:32.276Z] [INFO] 
+[2023-05-26T13:35:32.276Z] [INFO] --- maven-enforcer-plugin:3.1.0:enforce (enforce-maven) @ my-app ---
+[2023-05-26T13:35:33.175Z] [INFO] 
+[2023-05-26T13:35:33.175Z] [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ my-app ---
+[2023-05-26T13:35:33.187Z] [INFO] 
+[2023-05-26T13:35:33.187Z] [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ my-app ---
+[2023-05-26T13:35:33.426Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:33.426Z] [INFO] skip non existing resourceDirectory /app/src/main/resources
+[2023-05-26T13:35:33.426Z] [INFO] 
+[2023-05-26T13:35:33.426Z] [INFO] --- maven-compiler-plugin:3.10.1:compile (default-compile) @ my-app ---
+[2023-05-26T13:35:33.676Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:33.676Z] [INFO] 
+[2023-05-26T13:35:33.676Z] [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ my-app ---
+[2023-05-26T13:35:33.741Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:33.741Z] [INFO] skip non existing resourceDirectory /app/src/main/resources
+[2023-05-26T13:35:33.741Z] [INFO] 
+[2023-05-26T13:35:33.741Z] [INFO] --- maven-compiler-plugin:3.10.1:compile (default-compile) @ my-app ---
+[2023-05-26T13:35:33.926Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:33.927Z] [INFO] skip non existing resourceDirectory /app/src/test/resources
+[2023-05-26T13:35:33.927Z] [INFO] 
+[2023-05-26T13:35:33.927Z] [INFO] --- maven-compiler-plugin:3.10.1:testCompile (default-testCompile) @ my-app ---
+[2023-05-26T13:35:33.927Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:33.927Z] [INFO] 
+[2023-05-26T13:35:33.927Z] [INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ my-app ---
+[2023-05-26T13:35:33.991Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:33.991Z] [INFO] 
+[2023-05-26T13:35:33.991Z] [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ my-app ---
+[2023-05-26T13:35:33.991Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:33.991Z] [INFO] skip non existing resourceDirectory /app/src/test/resources
+[2023-05-26T13:35:33.991Z] [INFO] 
+[2023-05-26T13:35:33.991Z] [INFO] --- maven-compiler-plugin:3.10.1:testCompile (default-testCompile) @ my-app ---
+[2023-05-26T13:35:33.991Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:33.991Z] [INFO] 
+[2023-05-26T13:35:33.991Z] [INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ my-app ---
+[2023-05-26T13:35:34.177Z] [INFO] Surefire report directory: /app/target/surefire-reports
+[2023-05-26T13:35:34.542Z] [INFO] Surefire report directory: /app/target/surefire-reports
+[2023-05-26T13:35:35.088Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom
+[2023-05-26T13:35:35.093Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom
+[2023-05-26T13:35:35.889Z] Progress (1): 1.7 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom (1.7 kB at 2.0 kB/s)
+[2023-05-26T13:35:35.889Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom
+[2023-05-26T13:35:35.889Z] Progress (1): 2.3 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom (2.3 kB at 23 kB/s)
+[2023-05-26T13:35:36.004Z] Progress (1): 1.7 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom (1.7 kB at 2.4 kB/s)
+[2023-05-26T13:35:36.004Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom
+[2023-05-26T13:35:36.004Z] Progress (1): 2.3 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom (2.3 kB at 35 kB/s)
+[2023-05-26T13:35:36.004Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar
+[2023-05-26T13:35:36.004Z] Progress (1): 2.7/26 kBProgress (1): 5.5/26 kBProgress (1): 8.2/26 kBProgress (1): 11/26 kB Progress (1): 14/26 kBProgress (1): 16/26 kBProgress (1): 19/26 kBProgress (1): 22/26 kBProgress (1): 25/26 kBProgress (1): 26 kB                      Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar (26 kB at 240 kB/s)
+[2023-05-26T13:35:36.004Z] 
+[2023-05-26T13:35:36.140Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar
+[2023-05-26T13:35:36.140Z] Progress (1): 2.7/26 kBProgress (1): 5.5/26 kBProgress (1): 8.2/26 kBProgress (1): 11/26 kB Progress (1): 14/26 kBProgress (1): 16/26 kBProgress (1): 19/26 kBProgress (1): 21/26 kBProgress (1): 24/26 kBProgress (1): 26 kB                      Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar (26 kB at 161 kB/s)
+[2023-05-26T13:35:36.140Z] 
+[2023-05-26T13:35:36.140Z] -------------------------------------------------------
+[2023-05-26T13:35:36.140Z]  T E S T S
+[2023-05-26T13:35:36.140Z] -------------------------------------------------------
+[2023-05-26T13:35:36.254Z] -------------------------------------------------------
+[2023-05-26T13:35:36.255Z]  T E S T S
+[2023-05-26T13:35:36.255Z] -------------------------------------------------------
+[2023-05-26T13:35:36.505Z] Running com.mycompany.app.AppTest
+[2023-05-26T13:35:36.505Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 sec
+[2023-05-26T13:35:36.505Z] 
+[2023-05-26T13:35:36.505Z] Results :
+[2023-05-26T13:35:36.505Z] 
+[2023-05-26T13:35:36.505Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[2023-05-26T13:35:36.505Z] 
+[2023-05-26T13:35:36.505Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.505Z] [INFO] BUILD SUCCESS
+[2023-05-26T13:35:36.505Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.505Z] [INFO] Total time:  4.870 s
+[2023-05-26T13:35:36.505Z] [INFO] Finished at: 2023-05-26T13:35:36Z
+[2023-05-26T13:35:36.505Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.691Z] Running com.mycompany.app.AppTest
+[2023-05-26T13:35:36.691Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 sec
+[2023-05-26T13:35:36.691Z] 
+[2023-05-26T13:35:36.691Z] Results :
+[2023-05-26T13:35:36.691Z] 
+[2023-05-26T13:35:36.691Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[2023-05-26T13:35:36.691Z] 
+[2023-05-26T13:35:36.691Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.691Z] [INFO] BUILD SUCCESS
+[2023-05-26T13:35:36.691Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.691Z] [INFO] Total time:  5.174 s
+[2023-05-26T13:35:36.691Z] [INFO] Finished at: 2023-05-26T13:35:36Z
+[2023-05-26T13:35:36.691Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:36.756Z] + docker cp hello-python:/app/target/ target/
+[2023-05-26T13:35:36.756Z] + docker rm -f hello-python
+[2023-05-26T13:35:36.941Z] + docker cp hello-world:/app/target/ target/
+[2023-05-26T13:35:36.941Z] + docker rm -f hello-world
+[2023-05-26T13:35:36.941Z] hello-world
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[2023-05-26T13:35:37.002Z] Lock acquired on [Build-lock-0]
+[2023-05-26T13:35:37.006Z] Lock released on resource [Build-lock-0]
+[2023-05-26T13:35:37.007Z] hello-python
+[Pipeline] {
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] }
+[Pipeline] dir
+[2023-05-26T13:35:37.074Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-docker
+[Pipeline] {
+[Pipeline] // stage
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] }
+[2023-05-26T13:35:37.142Z] Lock released on resource [Build-lock-1]
+[Pipeline] sh
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2023-05-26T13:35:37.403Z] + docker rm -f hello-docker
+[2023-05-26T13:35:37.403Z] Error response from daemon: No such container: hello-docker
+[2023-05-26T13:35:37.403Z] + [ -d target]
+[2023-05-26T13:35:37.403Z] /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-docker@tmp/durable-a9d4f1c3/script.sh: 3: [: missing ]
+[2023-05-26T13:35:37.403Z] + mkdir target
+[2023-05-26T13:35:37.403Z] + docker build -t hello-docker -f Dockerfile-build .
+[2023-05-26T13:35:37.654Z] #1 [internal] load .dockerignore
+[2023-05-26T13:35:37.654Z] #1 transferring context: 2B done
+[2023-05-26T13:35:37.654Z] #1 DONE 0.0s
+[2023-05-26T13:35:37.654Z] 
+[2023-05-26T13:35:37.654Z] #2 [internal] load build definition from Dockerfile-build
+[2023-05-26T13:35:37.654Z] #2 transferring dockerfile: 140B done
+[2023-05-26T13:35:37.654Z] #2 DONE 0.0s
+[2023-05-26T13:35:37.654Z] 
+[2023-05-26T13:35:37.654Z] #3 [internal] load metadata for docker.io/library/maven:3.8.6-openjdk-11
+[2023-05-26T13:35:38.205Z] #3 DONE 0.5s
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #4 [1/4] FROM docker.io/library/maven:3.8.6-openjdk-11@sha256:805f366910aea2a91ed263654d23df58bd239f218b2f9562ff51305be81fa215
+[2023-05-26T13:35:38.205Z] #4 DONE 0.0s
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #5 [internal] load build context
+[2023-05-26T13:35:38.205Z] #5 transferring context: 4.31kB done
+[2023-05-26T13:35:38.205Z] #5 DONE 0.0s
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #6 [2/4] WORKDIR /app
+[2023-05-26T13:35:38.205Z] #6 CACHED
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #7 [3/4] COPY . .
+[2023-05-26T13:35:38.205Z] #7 CACHED
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #8 [4/4] RUN mvn -B -DskipTests clean package
+[2023-05-26T13:35:38.205Z] #8 CACHED
+[2023-05-26T13:35:38.205Z] 
+[2023-05-26T13:35:38.205Z] #9 exporting to image
+[2023-05-26T13:35:38.205Z] #9 exporting layers done
+[2023-05-26T13:35:38.205Z] #9 writing image sha256:fc6d226bfd2a00128a7f3909e1bcd9521f84ab85d4308d08a385092cf840e3f6 done
+[2023-05-26T13:35:38.205Z] #9 naming to docker.io/library/hello-docker done
+[2023-05-26T13:35:38.205Z] #9 DONE 0.0s
+[2023-05-26T13:35:38.205Z] + docker run --name hello-docker hello-docker mvn test
+[2023-05-26T13:35:40.067Z] [INFO] Scanning for projects...
+[2023-05-26T13:35:40.067Z] [INFO] 
+[2023-05-26T13:35:40.067Z] [INFO] ----------------------< com.mycompany.app:my-app >----------------------
+[2023-05-26T13:35:40.067Z] [INFO] Building my-app 1.0-SNAPSHOT
+[2023-05-26T13:35:40.067Z] [INFO] --------------------------------[ jar ]---------------------------------
+[2023-05-26T13:35:40.317Z] [INFO] 
+[2023-05-26T13:35:40.317Z] [INFO] --- maven-enforcer-plugin:3.1.0:enforce (enforce-maven) @ my-app ---
+[2023-05-26T13:35:40.868Z] [INFO] 
+[2023-05-26T13:35:40.868Z] [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ my-app ---
+[2023-05-26T13:35:40.868Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:40.868Z] [INFO] skip non existing resourceDirectory /app/src/main/resources
+[2023-05-26T13:35:40.868Z] [INFO] 
+[2023-05-26T13:35:40.868Z] [INFO] --- maven-compiler-plugin:3.10.1:compile (default-compile) @ my-app ---
+[2023-05-26T13:35:41.119Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:41.119Z] [INFO] 
+[2023-05-26T13:35:41.119Z] [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ my-app ---
+[2023-05-26T13:35:41.119Z] [INFO] Using 'UTF-8' encoding to copy filtered resources.
+[2023-05-26T13:35:41.119Z] [INFO] skip non existing resourceDirectory /app/src/test/resources
+[2023-05-26T13:35:41.119Z] [INFO] 
+[2023-05-26T13:35:41.119Z] [INFO] --- maven-compiler-plugin:3.10.1:testCompile (default-testCompile) @ my-app ---
+[2023-05-26T13:35:41.119Z] [INFO] Nothing to compile - all classes are up to date
+[2023-05-26T13:35:41.119Z] [INFO] 
+[2023-05-26T13:35:41.119Z] [INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ my-app ---
+[2023-05-26T13:35:41.369Z] [INFO] Surefire report directory: /app/target/surefire-reports
+[2023-05-26T13:35:41.620Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom
+[2023-05-26T13:35:42.170Z] Progress (1): 1.7 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom (1.7 kB at 3.0 kB/s)
+[2023-05-26T13:35:42.170Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom
+[2023-05-26T13:35:42.170Z] Progress (1): 2.3 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom (2.3 kB at 37 kB/s)
+[2023-05-26T13:35:42.170Z] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar
+[2023-05-26T13:35:42.421Z] Progress (1): 2.7/26 kBProgress (1): 5.5/26 kBProgress (1): 8.2/26 kBProgress (1): 11/26 kB Progress (1): 14/26 kBProgress (1): 16/26 kBProgress (1): 19/26 kBProgress (1): 22/26 kBProgress (1): 25/26 kBProgress (1): 26 kB                      Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar (26 kB at 294 kB/s)
+[2023-05-26T13:35:42.421Z] 
+[2023-05-26T13:35:42.421Z] -------------------------------------------------------
+[2023-05-26T13:35:42.421Z]  T E S T S
+[2023-05-26T13:35:42.421Z] -------------------------------------------------------
+[2023-05-26T13:35:42.671Z] Running com.mycompany.app.AppTest
+[2023-05-26T13:35:42.671Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec
+[2023-05-26T13:35:42.671Z] 
+[2023-05-26T13:35:42.671Z] Results :
+[2023-05-26T13:35:42.671Z] 
+[2023-05-26T13:35:42.671Z] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[2023-05-26T13:35:42.671Z] 
+[2023-05-26T13:35:42.671Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:42.671Z] [INFO] BUILD SUCCESS
+[2023-05-26T13:35:42.671Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:42.671Z] [INFO] Total time:  2.787 s
+[2023-05-26T13:35:42.671Z] [INFO] Finished at: 2023-05-26T13:35:42Z
+[2023-05-26T13:35:42.671Z] [INFO] ------------------------------------------------------------------------
+[2023-05-26T13:35:42.922Z] + docker cp hello-docker:/app/target/ target/
+[2023-05-26T13:35:42.922Z] + docker rm -f hello-docker
+[2023-05-26T13:35:42.922Z] hello-docker
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[2023-05-26T13:35:42.982Z] Lock released on resource [Build-lock-0]
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Parallel create image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] parallel
+[Pipeline] { (Branch: hello-world)
+[Pipeline] { (Branch: hello-python)
+[Pipeline] { (Branch: hello-docker)
+[Pipeline] stage
+[Pipeline] { (hello-world)
+[Pipeline] stage
+[Pipeline] { (hello-python)
+[Pipeline] stage
+[Pipeline] { (hello-docker)
+[Pipeline] lock
+[2023-05-26T13:35:43.395Z] Trying to acquire lock on [Image-create-lock-0]
+[2023-05-26T13:35:43.397Z] Resource [Image-create-lock-0] did not exist. Created.
+[2023-05-26T13:35:43.397Z] Lock acquired on [Image-create-lock-0]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:35:43.408Z] Trying to acquire lock on [Image-create-lock-1]
+[2023-05-26T13:35:43.410Z] Resource [Image-create-lock-1] did not exist. Created.
+[2023-05-26T13:35:43.410Z] Lock acquired on [Image-create-lock-1]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:35:43.432Z] Trying to acquire lock on [Image-create-lock-0]
+[2023-05-26T13:35:43.432Z] Found 0 available resource(s). Waiting for correct amount: 1.
+[2023-05-26T13:35:43.432Z] [Image-create-lock-0] is locked by Lesson38 » CI » lesson38 #12, waiting...
+[Pipeline] dir
+[2023-05-26T13:35:43.457Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-world
+[Pipeline] {
+[Pipeline] dir
+[2023-05-26T13:35:43.463Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-python
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
+[2023-05-26T13:35:43.749Z] + docker build -t ghcr.io/dum307/hello-world:latest -f Dockerfile-create .
+[2023-05-26T13:35:43.771Z] + docker build -t ghcr.io/dum307/hello-python:latest -f Dockerfile-create .
+[2023-05-26T13:35:44.022Z] #1 [internal] load .dockerignore
+[2023-05-26T13:35:44.022Z] #1 transferring context: 2B done
+[2023-05-26T13:35:44.022Z] #1 DONE 0.0s
+[2023-05-26T13:35:44.022Z] 
+[2023-05-26T13:35:44.022Z] #2 [internal] load build definition from Dockerfile-create
+[2023-05-26T13:35:44.022Z] #2 transferring dockerfile: 163B done
+[2023-05-26T13:35:44.022Z] #2 DONE 0.0s
+[2023-05-26T13:35:44.022Z] 
+[2023-05-26T13:35:44.022Z] #3 [internal] load metadata for docker.io/library/openjdk:8u342-slim
+[2023-05-26T13:35:44.301Z] #1 [internal] load build definition from Dockerfile-create
+[2023-05-26T13:35:44.301Z] #1 transferring dockerfile: 163B done
+[2023-05-26T13:35:44.301Z] #1 DONE 0.0s
+[2023-05-26T13:35:44.301Z] 
+[2023-05-26T13:35:44.301Z] #2 [internal] load .dockerignore
+[2023-05-26T13:35:44.301Z] #2 transferring context: 2B done
+[2023-05-26T13:35:44.301Z] #2 DONE 0.0s
+[2023-05-26T13:35:44.301Z] 
+[2023-05-26T13:35:44.301Z] #3 [internal] load metadata for docker.io/library/openjdk:8u342-slim
+[2023-05-26T13:35:44.852Z] #3 DONE 0.8s
+[2023-05-26T13:35:44.852Z] 
+[2023-05-26T13:35:44.853Z] #4 [1/3] FROM docker.io/library/openjdk:8u342-slim@sha256:19578a1e13b7a1e4cab9b227fb7b5d80e14665cf4024c6407d72ba89842a97ed
+[2023-05-26T13:35:44.853Z] #4 DONE 0.0s
+[2023-05-26T13:35:44.853Z] 
+[2023-05-26T13:35:44.853Z] #5 [internal] load build context
+[2023-05-26T13:35:44.853Z] #5 transferring context: 2.84kB done
+[2023-05-26T13:35:44.853Z] #5 DONE 0.0s
+[2023-05-26T13:35:44.853Z] 
+[2023-05-26T13:35:44.853Z] #6 [2/3] WORKDIR /app
+[2023-05-26T13:35:44.853Z] #6 CACHED
+[2023-05-26T13:35:44.853Z] 
+[2023-05-26T13:35:44.853Z] #7 [3/3] COPY target/target/my-app-1.0-SNAPSHOT.jar .
+[2023-05-26T13:35:44.853Z] #7 CACHED
+[2023-05-26T13:35:44.853Z] 
+[2023-05-26T13:35:44.853Z] #8 exporting to image
+[2023-05-26T13:35:44.853Z] #8 exporting layers done
+[2023-05-26T13:35:44.853Z] #8 writing image sha256:542f64175c888402f1effc99c131e8821f2116990c215c9d5b08b03f8befcb3d done
+[2023-05-26T13:35:44.853Z] #8 naming to ghcr.io/dum307/hello-world:latest 0.0s done
+[2023-05-26T13:35:44.853Z] #8 DONE 0.0s
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[2023-05-26T13:35:44.914Z] Lock acquired on [Image-create-lock-0]
+[2023-05-26T13:35:44.918Z] Lock released on resource [Image-create-lock-0]
+[2023-05-26T13:35:44.933Z] #3 DONE 0.8s
+[2023-05-26T13:35:44.933Z] 
+[2023-05-26T13:35:44.933Z] #4 [1/3] FROM docker.io/library/openjdk:8u342-slim@sha256:19578a1e13b7a1e4cab9b227fb7b5d80e14665cf4024c6407d72ba89842a97ed
+[2023-05-26T13:35:44.933Z] #4 DONE 0.0s
+[2023-05-26T13:35:44.933Z] 
+[2023-05-26T13:35:44.933Z] #5 [internal] load build context
+[2023-05-26T13:35:44.933Z] #5 transferring context: 2.84kB done
+[2023-05-26T13:35:44.933Z] #5 DONE 0.0s
+[2023-05-26T13:35:44.933Z] 
+[2023-05-26T13:35:44.933Z] #6 [2/3] WORKDIR /app
+[2023-05-26T13:35:44.933Z] #6 CACHED
+[2023-05-26T13:35:44.933Z] 
+[2023-05-26T13:35:44.933Z] #7 [3/3] COPY target/target/my-app-1.0-SNAPSHOT.jar .
+[2023-05-26T13:35:44.933Z] #7 CACHED
+[2023-05-26T13:35:44.933Z] 
+[2023-05-26T13:35:44.933Z] #8 exporting to image
+[2023-05-26T13:35:44.933Z] #8 exporting layers done
+[2023-05-26T13:35:44.933Z] #8 writing image sha256:219569fb2ca987453042fd7b46ad14a3991ba0a9ea936ce802991c08047e40c8 done
+[2023-05-26T13:35:44.933Z] #8 naming to ghcr.io/dum307/hello-python:latest done
+[2023-05-26T13:35:44.933Z] #8 DONE 0.0s
+[Pipeline] {
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] }
+[Pipeline] dir
+[2023-05-26T13:35:44.983Z] Running in /var/jenkins_home/workspace/Lesson38_CI_lesson38/simple-java-project/apps/hello-docker
+[Pipeline] {
+[Pipeline] // stage
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] }
+[2023-05-26T13:35:45.043Z] Lock released on resource [Image-create-lock-1]
+[Pipeline] sh
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2023-05-26T13:35:45.304Z] + docker build -t ghcr.io/dum307/hello-docker:latest -f Dockerfile-create .
+[2023-05-26T13:35:45.555Z] #1 [internal] load .dockerignore
+[2023-05-26T13:35:45.555Z] #1 transferring context: 2B done
+[2023-05-26T13:35:45.555Z] #1 DONE 0.0s
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #2 [internal] load build definition from Dockerfile-create
+[2023-05-26T13:35:45.555Z] #2 transferring dockerfile: 163B done
+[2023-05-26T13:35:45.555Z] #2 DONE 0.0s
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #3 [internal] load metadata for docker.io/library/openjdk:8u342-slim
+[2023-05-26T13:35:45.555Z] #3 DONE 0.2s
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #4 [1/3] FROM docker.io/library/openjdk:8u342-slim@sha256:19578a1e13b7a1e4cab9b227fb7b5d80e14665cf4024c6407d72ba89842a97ed
+[2023-05-26T13:35:45.555Z] #4 DONE 0.0s
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #5 [internal] load build context
+[2023-05-26T13:35:45.555Z] #5 transferring context: 2.84kB done
+[2023-05-26T13:35:45.555Z] #5 DONE 0.0s
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #6 [2/3] WORKDIR /app
+[2023-05-26T13:35:45.555Z] #6 CACHED
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #7 [3/3] COPY target/target/my-app-1.0-SNAPSHOT.jar .
+[2023-05-26T13:35:45.555Z] #7 CACHED
+[2023-05-26T13:35:45.555Z] 
+[2023-05-26T13:35:45.555Z] #8 exporting to image
+[2023-05-26T13:35:45.555Z] #8 exporting layers done
+[2023-05-26T13:35:45.555Z] #8 writing image sha256:3371b32bff0d9414342a243cd81425c6d674da1ba3ceabd06a7154b8251262cf done
+[2023-05-26T13:35:45.555Z] #8 naming to ghcr.io/dum307/hello-docker:latest done
+[2023-05-26T13:35:45.555Z] #8 DONE 0.0s
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[2023-05-26T13:35:45.616Z] Lock released on resource [Image-create-lock-0]
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withCredentials
+[2023-05-26T13:35:45.890Z] Masking supported pattern matches of $pass
+[Pipeline] {
+[Pipeline] sh
+[2023-05-26T13:35:45.915Z] Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+[2023-05-26T13:35:45.915Z] 		 Affected argument(s) used the following variable(s): [pass]
+[2023-05-26T13:35:45.915Z] 		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
+[2023-05-26T13:35:46.171Z] + docker login ghcr.io/dum307 -u dum307307@gmail.com --password-stdin
+[2023-05-26T13:35:46.171Z] + echo ****
+[2023-05-26T13:35:46.721Z] WARNING! Your password will be stored unencrypted in /var/jenkins_home/.docker/config.json.
+[2023-05-26T13:35:46.722Z] Configure a credential helper to remove this warning. See
+[2023-05-26T13:35:46.722Z] https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+[2023-05-26T13:35:46.722Z] 
+[2023-05-26T13:35:46.722Z] Login Succeeded
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] sh
+[2023-05-26T13:35:47.040Z] + docker push ghcr.io/dum307/hello-world:latest
+[2023-05-26T13:35:47.040Z] The push refers to repository [ghcr.io/dum307/hello-world]
+[2023-05-26T13:35:47.290Z] be13ed5b1e56: Preparing
+[2023-05-26T13:35:47.290Z] d2b86a922d97: Preparing
+[2023-05-26T13:35:47.290Z] 954be880ce7c: Preparing
+[2023-05-26T13:35:47.290Z] cd5a0a9f1e01: Preparing
+[2023-05-26T13:35:47.290Z] eafe6e032dbd: Preparing
+[2023-05-26T13:35:47.290Z] 92a4e8a3140f: Preparing
+[2023-05-26T13:35:47.290Z] 92a4e8a3140f: Waiting
+[2023-05-26T13:35:47.841Z] 954be880ce7c: Layer already exists
+[2023-05-26T13:35:47.841Z] eafe6e032dbd: Layer already exists
+[2023-05-26T13:35:47.841Z] be13ed5b1e56: Layer already exists
+[2023-05-26T13:35:47.841Z] cd5a0a9f1e01: Layer already exists
+[2023-05-26T13:35:47.841Z] d2b86a922d97: Layer already exists
+[2023-05-26T13:35:48.092Z] 92a4e8a3140f: Layer already exists
+[2023-05-26T13:35:48.642Z] latest: digest: sha256:f33e256da53789592e87f865a4ad577f362e2cafd7cd8745a56da0e27c856aa7 size: 1575
+[Pipeline] sh
+[2023-05-26T13:35:48.919Z] + docker push ghcr.io/dum307/hello-python:latest
+[2023-05-26T13:35:48.919Z] The push refers to repository [ghcr.io/dum307/hello-python]
+[2023-05-26T13:35:49.170Z] 28b92081d3d0: Preparing
+[2023-05-26T13:35:49.170Z] d2b86a922d97: Preparing
+[2023-05-26T13:35:49.170Z] 954be880ce7c: Preparing
+[2023-05-26T13:35:49.170Z] cd5a0a9f1e01: Preparing
+[2023-05-26T13:35:49.170Z] eafe6e032dbd: Preparing
+[2023-05-26T13:35:49.170Z] 92a4e8a3140f: Preparing
+[2023-05-26T13:35:49.170Z] 92a4e8a3140f: Waiting
+[2023-05-26T13:35:49.420Z] eafe6e032dbd: Layer already exists
+[2023-05-26T13:35:49.420Z] 954be880ce7c: Layer already exists
+[2023-05-26T13:35:49.671Z] d2b86a922d97: Layer already exists
+[2023-05-26T13:35:49.671Z] cd5a0a9f1e01: Layer already exists
+[2023-05-26T13:35:49.671Z] 28b92081d3d0: Layer already exists
+[2023-05-26T13:35:49.921Z] 92a4e8a3140f: Layer already exists
+[2023-05-26T13:35:50.472Z] latest: digest: sha256:db98475fb643a60af2d3a5d4213769a7b0e9df06941e99411a51c6995f528af2 size: 1575
+[Pipeline] sh
+[2023-05-26T13:35:50.749Z] + docker push ghcr.io/dum307/hello-docker:latest
+[2023-05-26T13:35:50.749Z] The push refers to repository [ghcr.io/dum307/hello-docker]
+[2023-05-26T13:35:50.749Z] 3013d8ef81c9: Preparing
+[2023-05-26T13:35:50.749Z] d2b86a922d97: Preparing
+[2023-05-26T13:35:50.749Z] 954be880ce7c: Preparing
+[2023-05-26T13:35:50.749Z] cd5a0a9f1e01: Preparing
+[2023-05-26T13:35:50.749Z] eafe6e032dbd: Preparing
+[2023-05-26T13:35:50.749Z] 92a4e8a3140f: Preparing
+[2023-05-26T13:35:50.749Z] 92a4e8a3140f: Waiting
+[2023-05-26T13:35:51.300Z] eafe6e032dbd: Layer already exists
+[2023-05-26T13:35:51.300Z] cd5a0a9f1e01: Layer already exists
+[2023-05-26T13:35:51.300Z] 3013d8ef81c9: Layer already exists
+[2023-05-26T13:35:51.300Z] d2b86a922d97: Layer already exists
+[2023-05-26T13:35:51.300Z] 954be880ce7c: Layer already exists
+[2023-05-26T13:35:51.551Z] 92a4e8a3140f: Layer already exists
+[2023-05-26T13:35:52.462Z] latest: digest: sha256:10fcc2706b15a6ce9543c72b75d5ad52db15e1f573577a714a78e391dccff1cb size: 1575
+[Pipeline] echo
+[2023-05-26T13:35:52.484Z] {hello-world=simple-java-project/apps/hello-world, hello-python=simple-java-project/apps/hello-python, hello-docker=simple-java-project/apps/hello-docker}
+[Pipeline] writeJSON
+[Pipeline] readJSON
+[Pipeline] echo
+[2023-05-26T13:35:52.520Z] {"hello-world":"simple-java-project/apps/hello-world","hello-python":"simple-java-project/apps/hello-python","hello-docker":"simple-java-project/apps/hello-docker"}
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Parallel deploy image)
+[Pipeline] build
+[2023-05-26T13:35:52.642Z] Scheduling project: Lesson38 » CD » lesson38
+[2023-05-26T13:35:59.335Z] Starting building: Lesson38 » CD » lesson38 #13
+[2023-05-26T13:36:09.430Z] Build Lesson38 » CD » lesson38 #13 completed: SUCCESS
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+[2023-05-26T13:36:09.526Z] [WS-CLEANUP] Deleting project workspace...
+[2023-05-26T13:36:09.526Z] [WS-CLEANUP] Deferred wipeout is used...
+[2023-05-26T13:36:09.534Z] [WS-CLEANUP] done
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2023-05-26T13:36:09.617Z] 
+[Pipeline] // ansiColor
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+
+GitHub has been notified of this commit’s build result
+
+Finished: SUCCESS

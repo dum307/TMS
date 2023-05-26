@@ -78,7 +78,7 @@ pipeline {
         }
 
         stage ('Parallel create image') {
-            when { expression { BRANCH_NAME == 'lesson38-1' } }
+            when { expression { BRANCH_NAME == 'lesson38' } }
             steps {
                 script {
                     Integer PARALLEL_EXECUTE_COUNT = 2
@@ -91,7 +91,7 @@ pipeline {
         }
 
         stage ('Push image') {
-            when { expression { BRANCH_NAME == 'lesson38-1' } }
+            when { expression { BRANCH_NAME == 'lesson38' } }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-http', passwordVariable: 'pass', usernameVariable: 'user')]) {
@@ -111,9 +111,9 @@ pipeline {
         }
 
         stage ('Parallel deploy image') {
-            when { expression { BRANCH_NAME == 'lesson38-1' } }
+            when { expression { BRANCH_NAME == 'lesson38' } }
             steps {
-                build job: "Lesson38/CD/lesson38-1"
+                build job: "Lesson38/CD/lesson38"
             }
         }
 

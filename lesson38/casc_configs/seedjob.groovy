@@ -25,7 +25,7 @@ multibranchPipelineJob('Lesson38/CI') {
                             strategyId(1)
                         }
                         headWildcardFilter {
-                            includes('main PR-* lesson38-1')
+                            includes('main PR-* lesson38')
                             excludes('')
                         }
                         cloneOption {
@@ -68,7 +68,7 @@ multibranchPipelineJob('Lesson38/CI') {
                         // If checked, scripts may select a custom version of the library by appending @someversion in the @Library annotation.
                         allowVersionOverride(true)
                         // A default version of the library to load if a script does not select another.
-                        defaultVersion('lesson38-1')
+                        defaultVersion('lesson38')
                     }
                 }
                 libraryConfiguration {
@@ -86,7 +86,7 @@ multibranchPipelineJob('Lesson38/CI') {
                         // If checked, scripts may select a custom version of the library by appending @someversion in the @Library annotation.
                         allowVersionOverride(true)
                         // A default version of the library to load if a script does not select another.
-                        defaultVersion('lesson38-1')
+                        defaultVersion('lesson38')
                     }
                 }
 	        }
@@ -95,7 +95,7 @@ multibranchPipelineJob('Lesson38/CI') {
     triggers {
         // The maximum amount of time since the last indexing that is allowed to elapse before an indexing is triggered.
         periodicFolderTrigger {
-            interval(1m)
+            interval('1m')
         }
     }
 }
@@ -122,7 +122,7 @@ multibranchPipelineJob('Lesson38/CD') {
                             strategyId(1)
                         }
                         headWildcardFilter {
-                            includes('main PR-* lesson38-1')
+                            includes('main PR-* lesson38')
                             excludes('')
                         }
                         cloneOption {
@@ -165,7 +165,7 @@ multibranchPipelineJob('Lesson38/CD') {
                         // If checked, scripts may select a custom version of the library by appending @someversion in the @Library annotation.
                         allowVersionOverride(true)
                         // A default version of the library to load if a script does not select another.
-                        defaultVersion('lesson38-1')
+                        defaultVersion('lesson38')
                     }
                 }
                 libraryConfiguration {
@@ -183,7 +183,7 @@ multibranchPipelineJob('Lesson38/CD') {
                         // If checked, scripts may select a custom version of the library by appending @someversion in the @Library annotation.
                         allowVersionOverride(true)
                         // A default version of the library to load if a script does not select another.
-                        defaultVersion('lesson38-1')
+                        defaultVersion('lesson38')
                     }
                 }
 	        }

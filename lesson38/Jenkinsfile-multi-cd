@@ -42,7 +42,7 @@ pipeline {
         }
 
         stage ('Parallel deploy image') {
-            when { expression { BRANCH_NAME == 'lesson38-1' && SKIP_DEPLOY == false } }
+            when { expression { BRANCH_NAME == 'lesson38' && SKIP_DEPLOY == false } }
             steps {
                 script {
                     println(pushedImages)

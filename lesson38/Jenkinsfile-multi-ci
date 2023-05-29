@@ -1,0 +1,126 @@
+@Library(['general', 'build']) _
+
+pipeline {
+    agent { label 'built-in' }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        disableConcurrentBuilds()
+        timestamps()
+        ansiColor('xtrem')
+    }
+
+    environment {
+        SERVICES_FILE = 'simple-java-project/apps/services.json'
+        GIT_REPO_OWNER = 'dum307'
+        GIT_REPO_NAME = 'TMS'
+        DOCKER_REGISTRY = "ghcr.io/${GIT_REPO_OWNER.toLowerCase()}"
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    PR_ID = prID(BRANCH_NAME)
+                    apps = readJSON file: SERVICES_FILE
+                    log.info "Branch: ${env.BRANCH_NAME}"
+                    log.info "PR ID: ${PR_ID}"
+                    try{
+                        env.TAG = sh(script: 'git describe --tags --abbrev=0 --exact-match HEAD', returnStdout: true).trim()
+                    } catch(err){
+                        println ("Tag is empty: ${err.getMessage()}")
+                        env.TAG = 'latest'
+                    }
+                    println (env.TAG)
+                    PR_DIFF=[]
+                    BUILD_APPS=[:]
+                    pushedImages = [:]
+                    // PR_DIFF=sh(script: 'git show --pretty=format: --name-only', returnStdout: true).trim()
+                    // println PR_DIFF
+                    if (!PR_ID.isEmpty()) {
+                        def response = httpRequest url: "https://api.github.com/repos/${GIT_REPO_OWNER}/${GIT_REPO_NAME}/pulls/${PR_ID}/files",
+                                                    customHeaders: [[name: 'Accept', value: 'application/vnd.github+json'],[name: 'X-GitHub-Api-Version', value: '2022-11-28']],
+                                                    authentication: 'github-http'
+
+                        println("Request status Github API: "+response.status)
+                        // println("Content: "+response.content)
+                        PR_DIFF_DATA = readJSON text: response.content
+                        PR_DIFF_DATA.each { item ->
+                            PR_DIFF.add(item.filename)
+                        }
+                        println ("PR diff: ${PR_DIFF}")
+                        apps.each { app, path ->
+                            if (isChanged(PR_DIFF, path)) {
+                                BUILD_APPS.put(app, path)
+                            }
+                        }
+                    } else {
+                        BUILD_APPS = apps
+                    }
+                    // println (apps)
+                    
+                    println("Build apps: ${BUILD_APPS}")
+                    Integer PARALLEL_EXECUTE_COUNT = 2
+                    builtApps = [:]
+                    buildStages = stagePrepare('build', BUILD_APPS, PARALLEL_EXECUTE_COUNT, builtApps)
+                }
+            }
+        }
+
+        stage ('Parallel build') {
+            steps {
+                script {
+                    buildStages.each { stage ->
+                        parallel stage
+                    }
+                }
+            }
+        }
+
+        stage ('Parallel create image') {
+            when { expression { BRANCH_NAME == 'lesson38' } }
+            steps {
+                script {
+                    Integer PARALLEL_EXECUTE_COUNT = 2
+                    createImageStages = stagePrepare('image', builtApps, PARALLEL_EXECUTE_COUNT)
+                    createImageStages.each { stage ->
+                        parallel stage
+                    }
+                }
+            }
+        }
+
+        stage ('Push image') {
+            when { expression { BRANCH_NAME == 'lesson38' } }
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'github-http', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "echo ${pass} | docker login ${DOCKER_REGISTRY} -u ${user} --password-stdin"
+                    }
+                    builtApps.each { app, path ->
+                        sh "docker push ${DOCKER_REGISTRY}/${app}:${env.TAG}"
+                        pushedImages.put(app, path)
+                    }
+                    println(pushedImages)
+                    // Запись запущенных имеджей в json файл, чтобы можно было прочитать в другом пайплайне
+                    writeJSON(file: '/tmp/pushedImages.json', json: pushedImages)
+                    pushedapps = readJSON file: '/tmp/pushedImages.json'
+                    println(pushedapps)
+                }
+            }
+        }
+
+        stage ('Parallel deploy image') {
+            when { expression { BRANCH_NAME == 'lesson38' } }
+            steps {
+                build job: "Lesson38/CD/lesson38"
+            }
+        }
+
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

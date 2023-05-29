@@ -1,0 +1,198 @@
+Started by upstream project "Lesson38/CI/lesson38" build number 12
+originally caused by:
+ Branch indexing
+Connecting to https://api.github.com using dum307307@gmail.com/******
+Obtained lesson38/Jenkinsfile-multi-cd from 67e07ca72812200314b79b4f4063b35efdb2fc32
+Loading library general@lesson38
+Attempting to resolve lesson38 from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git ls-remote -- https://github.com/dum307/TMS.git # timeout=10
+Found match: refs/heads/lesson38 revision 67e07ca72812200314b79b4f4063b35efdb2fc32
+The recommended git tool is: NONE
+using credential github-http
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Lesson38_CD_lesson38@libs/40e04719abb082dd29af1b446f1690e00713e510077b031d1cb52211bfde4d1e/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+ > git rev-list --no-walk 153536374a9139ccdb5cd31203c5af2dc96bfe08 # timeout=10
+Loading library deploy@lesson38
+Attempting to resolve lesson38 from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git ls-remote -- https://github.com/dum307/TMS.git # timeout=10
+Found match: refs/heads/lesson38 revision 67e07ca72812200314b79b4f4063b35efdb2fc32
+The recommended git tool is: NONE
+using credential github-http
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Lesson38_CD_lesson38@libs/40e04719abb082dd29af1b446f1690e00713e510077b031d1cb52211bfde4d1e/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/Lesson38_CD_lesson38
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential github-http
+Cloning the remote Git repository
+Cloning repository https://github.com/dum307/TMS.git
+ > git init /var/jenkins_home/workspace/Lesson38_CD_lesson38 # timeout=10
+Fetching upstream changes from https://github.com/dum307/TMS.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/dum307/TMS.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/dum307/TMS.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 67e07ca72812200314b79b4f4063b35efdb2fc32 (lesson38)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 67e07ca72812200314b79b4f4063b35efdb2fc32 # timeout=10
+Commit message: "lesson38"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] ansiColor
+[Pipeline] {
+[2023-05-26T13:36:05.659Z] 
+[Pipeline] stage
+[Pipeline] { (Prepare)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] fileExists
+[Pipeline] readJSON
+[Pipeline] echo
+[2023-05-26T13:36:05.768Z] {"hello-world":"simple-java-project/apps/hello-world","hello-python":"simple-java-project/apps/hello-python","hello-docker":"simple-java-project/apps/hello-docker"}
+[Pipeline] echo
+[2023-05-26T13:36:05.796Z] [1;32mINFO: Branch: lesson38[0m
+[Pipeline] sh
+[2023-05-26T13:36:06.063Z] + git describe --tags --abbrev=0 --exact-match HEAD
+[2023-05-26T13:36:06.063Z] fatal: no tag exactly matches '67e07ca72812200314b79b4f4063b35efdb2fc32'
+[Pipeline] echo
+[2023-05-26T13:36:06.084Z] Tag is empty: script returned exit code 128
+[Pipeline] echo
+[2023-05-26T13:36:06.094Z] latest
+[Pipeline] echo
+[2023-05-26T13:36:06.099Z] false
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Parallel deploy image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+[2023-05-26T13:36:06.251Z] {"hello-world":"simple-java-project/apps/hello-world","hello-python":"simple-java-project/apps/hello-python","hello-docker":"simple-java-project/apps/hello-docker"}
+[Pipeline] parallel
+[Pipeline] { (Branch: hello-world)
+[Pipeline] { (Branch: hello-python)
+[Pipeline] { (Branch: hello-docker)
+[Pipeline] stage
+[Pipeline] { (hello-world)
+[Pipeline] stage
+[Pipeline] { (hello-python)
+[Pipeline] stage
+[Pipeline] { (hello-docker)
+[Pipeline] lock
+[2023-05-26T13:36:06.419Z] Trying to acquire lock on [Image-deploy-lock-0]
+[2023-05-26T13:36:06.420Z] Resource [Image-deploy-lock-0] did not exist. Created.
+[2023-05-26T13:36:06.420Z] Lock acquired on [Image-deploy-lock-0]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:36:06.434Z] Trying to acquire lock on [Image-deploy-lock-1]
+[2023-05-26T13:36:06.435Z] Resource [Image-deploy-lock-1] did not exist. Created.
+[2023-05-26T13:36:06.435Z] Lock acquired on [Image-deploy-lock-1]
+[Pipeline] {
+[Pipeline] lock
+[2023-05-26T13:36:06.448Z] Trying to acquire lock on [Image-deploy-lock-0]
+[2023-05-26T13:36:06.448Z] Found 0 available resource(s). Waiting for correct amount: 1.
+[2023-05-26T13:36:06.449Z] [Image-deploy-lock-0] is locked by Lesson38 » CD » lesson38 #13, waiting...
+[Pipeline] sh
+[Pipeline] sh
+[2023-05-26T13:36:06.747Z] + docker run --rm --name hello-world ghcr.io/dum307/hello-world:latest
+[2023-05-26T13:36:06.773Z] + docker run --rm --name hello-python ghcr.io/dum307/hello-python:latest
+[2023-05-26T13:36:06.997Z] Hello World!
+[Pipeline] }
+[2023-05-26T13:36:07.253Z] Lock acquired on [Image-deploy-lock-0]
+[2023-05-26T13:36:07.258Z] Lock released on resource [Image-deploy-lock-0]
+[Pipeline] {
+[Pipeline] // lock
+[Pipeline] }
+[2023-05-26T13:36:07.325Z] Hello Python!!!
+[Pipeline] sh
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[2023-05-26T13:36:07.455Z] Lock released on resource [Image-deploy-lock-1]
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2023-05-26T13:36:07.583Z] + docker run --rm --name hello-docker ghcr.io/dum307/hello-docker:latest
+[2023-05-26T13:36:07.834Z] Hello Docker!
+[Pipeline] }
+[2023-05-26T13:36:08.091Z] Lock released on resource [Image-deploy-lock-0]
+[Pipeline] // lock
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
+[2023-05-26T13:36:08.604Z] + rm -f /tmp/pushedImages.json
+[Pipeline] cleanWs
+[2023-05-26T13:36:08.627Z] [WS-CLEANUP] Deleting project workspace...
+[2023-05-26T13:36:08.627Z] [WS-CLEANUP] Deferred wipeout is used...
+[2023-05-26T13:36:08.635Z] [WS-CLEANUP] done
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2023-05-26T13:36:08.691Z] 
+[Pipeline] // ansiColor
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+
+GitHub has been notified of this commit’s build result
+
+Finished: SUCCESS

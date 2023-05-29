@@ -1,0 +1,21 @@
+jenkins:
+  clouds:
+  - docker:
+      containerCap: 10
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://jenkins-docker:2375"
+        readTimeout: 60
+      name: "docker"
+      templates:
+      - connector: "attach"
+        dockerTemplateBase:
+          cpuPeriod: 0
+          cpuQuota: 0
+          image: "maven:3.8.6-openjdk-11"
+        labelString: "docker-maven"
+        mode: EXCLUSIVE
+        name: "docker-maven"
+        pullStrategy: PULL_ALWAYS
+        pullTimeout: 300

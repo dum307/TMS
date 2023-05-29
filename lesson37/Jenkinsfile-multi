@@ -1,0 +1,182 @@
+def stagePrepare(flag, apps, parallel_count) {
+    stageList = []
+    stageMap = [:]
+    apps.eachWithIndex { app, path, i ->
+        Integer lock_id = i % parallel_count
+        if (flag == 'build') {
+            stageMap.put(app, stageBuildCreate(app, path, lock_id))
+        } else {
+            stageMap.put(app, stageImageCreate(app, path, lock_id))
+        }
+    }
+    stageList.add(stageMap)
+    return stageList
+}
+
+def stageBuildCreate(app, path, lock_id) {
+    return {
+        stage(app) {
+            lock("Build-lock-${lock_id}") {
+                dir(path) {
+                    sh """
+                        docker rm -f ${app}
+                        [ -d target] || mkdir target
+                        docker build -t ${app} -f Dockerfile-build .
+                        docker run --name ${app} ${app} mvn test &&
+                        docker cp ${app}:/app/target/ target/
+                        docker rm -f ${app}
+                    """
+                    builtApps.put(app, path)
+                }
+            }
+        }
+    }
+}
+
+def stageImageCreate(app, path, lock_id) {
+    return {
+        stage(app) {
+            lock("Image-create-lock-${lock_id}") {
+                dir (path) {
+                    sh "docker build -t ${DOCKER_REGISTRY}/${app}:${TAG} -f Dockerfile-create ."
+                }
+            }
+        }
+    }
+}
+
+def isChanged(diff, path) {
+    for (file in diff) {
+        if (file =~ path) {
+            return true
+        }
+    }
+}
+
+def prID(branch) {
+    if (branch =~ /PR-*/) {
+        pr_id = CHANGE_ID
+    } else {
+        try {
+            commit_name = sh(script: 'git show -s --format=%s', returnStdout: true).trim()
+            pr_id = commit_name.substring(commit_name.indexOf('#')+1, commit_name.indexOf(' from'))
+        } catch(err) {
+            println ("Failed: ${err.getMessage()}")
+            pr_id = ''
+        }
+    }
+    return pr_id
+}
+
+
+pipeline {
+    agent { label 'master' }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        disableConcurrentBuilds()
+        timestamps()
+        // ansiColor('xtrem')
+    }
+
+    environment {
+        SERVICES_FILE = 'simple-java-project/apps/services.json'
+        GIT_REPO_OWNER = 'DOS12-onl'
+        GIT_REPO_NAME = 'example'
+        DOCKER_REGISTRY = "ghcr.io/${GIT_REPO_OWNER.toLowerCase()}"
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    PR_ID = prID(BRANCH_NAME)
+                    apps = readJSON file: SERVICES_FILE
+                    try{
+                        TAG = sh(script: 'git describe --tags --abbrev=0 --exact-match HEAD', returnStdout: true).trim()
+                    } catch(err){
+                        println ("Tag is empty: ${err.getMessage()}")
+                        TAG = 'latest'
+                    }
+                    println TAG 
+                    println ("Branch: ${env.BRANCH_NAME}")
+                    println ("PR ID: ${PR_ID}")
+                    PR_DIFF=[]
+                    BUILD_APPS=[:]
+                    
+                    // PR_DIFF=sh(script: 'git show --pretty=format: --name-only', returnStdout: true).trim()
+                    // println PR_DIFF
+                    if (!PR_ID.isEmpty()) {
+                        def response = httpRequest url: "https://api.github.com/repos/${GIT_REPO_OWNER}/${GIT_REPO_NAME}/pulls/${PR_ID}/files",
+                                                    customHeaders: [[name: 'Accept', value: 'application/vnd.github+json'],[name: 'X-GitHub-Api-Version', value: '2022-11-28']],
+                                                    authentication: 'github-http'
+
+                        println("Request status Github API: "+response.status)
+                        // println("Content: "+response.content)
+                        PR_DIFF_DATA = readJSON text: response.content
+                        PR_DIFF_DATA.each { item ->
+                            PR_DIFF.add(item.filename)
+                        }
+                        println ("PR diff: ${PR_DIFF}")
+                        apps.each { app, path ->
+                            if (isChanged(PR_DIFF, path)) {
+                                BUILD_APPS.put(app, path)
+                            }
+                        }
+                    } else {
+                        BUILD_APPS = apps
+                    }
+                    // println (apps)
+                    
+                    println("Build apps: ${BUILD_APPS}")
+                    Integer PARALLEL_EXECUTE_COUNT = 2
+                    buildStages = stagePrepare('build', BUILD_APPS, PARALLEL_EXECUTE_COUNT)
+                    builtApps = [:]
+                }
+            }
+        }
+
+        stage ('Parallel build') {
+            steps {
+                script {
+                    buildStages.each { stage ->
+                        parallel stage
+                    }
+                }
+            }
+        }
+
+        stage ('Parallel create image') {
+            when { expression { BRANCH_NAME == 'main' } }
+            steps {
+                script {
+                    Integer PARALLEL_EXECUTE_COUNT = 2
+                    createImageStages = stagePrepare('image', builtApps, PARALLEL_EXECUTE_COUNT)
+                    createImageStages.each { stage ->
+                        parallel stage
+                    }
+                }
+            }
+        }
+
+        stage ('Push image') {
+            when { expression { BRANCH_NAME == 'main' } }
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'github-http', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "echo ${pass} | docker login ${DOCKER_REGISTRY} -u ${user} --password-stdin"
+                    }
+                    builtApps.each { app, path ->
+                        sh "docker push ${DOCKER_REGISTRY}/${app}:${TAG}"
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

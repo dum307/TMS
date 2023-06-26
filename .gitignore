@@ -1,1 +1,8 @@
 .token
+
+#terraform
+.terraform/
+*.terraform.lock.hcl
+
+#vscode
+.vscode/

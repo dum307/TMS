@@ -1,0 +1,5 @@
+vpc_cidr_block = "10.0.0.0/16"
+rds_username = "admin"
+rds_password = "password"
+key_name = "dos12"
+private_key_file_path = "~/.ssh/dos12.pem"

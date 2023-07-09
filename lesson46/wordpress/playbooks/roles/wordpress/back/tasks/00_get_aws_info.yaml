@@ -1,0 +1,31 @@
+- name: Get AWS info
+  become: false
+  block:
+  - name: Get info about an db instance
+    delegate_to: localhost
+    community.aws.rds_instance_info:
+      region: '{{ aws_region }}'
+      db_instance_identifier: '{{ aws_db_instance }}'
+    register: db_result
+
+  - name: Get info about EFS instances
+    delegate_to: localhost
+    community.aws.efs_info:
+      tags:
+        Name: '{{ aws_project_name }}'
+    register: efs_result
+
+  - name: Set facts
+    ansible.builtin.set_fact:
+      efs_address: "{{ efs_result | json_query('efs[*].filesystem_address') | join('\n') }}"
+      wordpress_db_host: "{{ db_result | json_query('instances[*].endpoint.address') | join('\n') }}"
+
+  - name: Debug
+    delegate_to: localhost
+    debug:
+      msg: '{{efs_address}}'
+  
+  - name: Debug
+    delegate_to: localhost
+    debug:
+      msg: '{{wordpress_db_host}}'

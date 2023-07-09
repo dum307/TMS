@@ -1,0 +1,33 @@
+- name: Copy my.cnf
+  ansible.builtin.template:
+    src: my.cnf.j2
+    dest:  /root/.my.cnf
+    owner: root
+
+- name: 'Create a new database {{ wordpress_db_name }}'
+  command: 'mysql -u root -e "{{ item }}"'
+  with_items:
+    - 'CREATE DATABASE IF NOT EXISTS {{ wordpress_db_name }};'
+    - "CREATE USER IF NOT EXISTS {{ wordpress_db_user }}@localhost IDENTIFIED BY '{{ wordpress_db_pass }}';"
+    - 'GRANT ALL PRIVILEGES ON {{ wordpress_db_name }}.* TO {{ wordpress_db_user }}@localhost;'
+    - 'FLUSH PRIVILEGES;'
+  no_log: false
+  notify: Restart mysql
+
+# - name: 'Create a new database {{ wordpress_db_name }}'
+#   community.mysql.mysql_db:
+#     # check_implicit_admin: yes
+#     config_overrides_defaults: yes
+#     # login_user: root
+#     # login_password:
+#     name: '{{ wordpress_db_name }}'
+#     state: present
+
+# - name: Create user with password, all database privileges and 'WITH GRANT OPTION' in db1 and db2
+#   community.mysql.mysql_user:
+#     state: present
+#     name: '{{ wordpress_db_user }}'
+#     password: '{{ wordpress_db_pass }}'
+#     priv:
+#       "{{ wordpress_db_name }}'.*": "ALL"
+#   notify: Restart mysql

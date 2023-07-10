@@ -23,7 +23,7 @@ resource "aws_security_group" "allow_mysql" {
 }
 
 module "db" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-rds.git"
+  source = "terraform-aws-modules/rds/aws"
 
   identifier = var.tags.Name
 

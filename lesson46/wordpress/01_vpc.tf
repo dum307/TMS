@@ -17,7 +17,7 @@ locals {
 }
 
 module "vpc" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-vpc.git"
+  source = "terraform-aws-modules/vpc/aws"
 
   name = var.tags.Name
   cidr = var.vpc_cidr_block

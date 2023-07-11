@@ -11,13 +11,13 @@ resource "aws_instance" "this" {
 
 
 connection {
-    type     = "ssh"
-    bastion_host = var.bastion_use ? var.bastion_ip : ""
-    bastion_user = var.bastion_use ? var.bastion_user : ""
-    bastion_private_key = var.bastion_use ? file(var.template_private_key_file_path) : ""
-    user     = var.template_username
-    private_key = file(var.template_private_key_file_path)
-    host     = var.bastion_use ? self.private_ip : self.public_ip
+    type                = "ssh"
+    bastion_host        = var.bastion_use ? var.bastion_ip : ""
+    bastion_user        = var.bastion_use ? var.bastion_user : ""
+    # bastion_private_key = var.bastion_use ? file(var.template_private_key_file_path) : ""
+    user                = var.template_username
+    # private_key         = file(var.template_private_key_file_path)
+    host                = var.bastion_use ? self.private_ip : self.public_ip
   }
 
   provisioner "remote-exec" {
@@ -25,21 +25,7 @@ connection {
   }
 
   provisioner "local-exec" {
-    command = <<EOT
-      ansible-playbook \
-        -i '${self.private_ip},' \
-        --ssh-common-args ' \
-          -o ProxyCommand="ssh -o StrictHostKeyChecking=no -A -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip} \
-                               -i ${var.private_key_file_path}"' \
-        -u ubuntu \
-        --private-key ${var.private_key_file_path} \
-        --extra-vars "efs_address=${module.efs.dns_name} \
-                      wordpress_db_host=${module.db.db_instance_endpoint} \
-                      wordpress_db_name=${var.rds_db_name} \
-					            wordpress_db_user=${var.rds_username} \
-					            wordpress_db_pass=${var.rds_password}" \
-        ./playbooks/wp_back.yml
-    EOT  
+   command = var.bastion_use ? "ansible-playbook -i ${self.private_ip}, --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${var.bastion_ip}' -o StrictHostKeyChecking=no \" --extra-vars 'efs_address=${var.efs_dns_name} wordpress_db_host=${var.db_instance_endpoint} wordpress_db_name=${var.rds_db_name} wordpress_db_user=${var.rds_username} wordpress_db_pass=${var.rds_password} ' ${var.playbook_path}" : null
   }
 }
 

@@ -1,7 +1,7 @@
-variable "template_type" {
-    type = string
-    description = "frontend or backend"
-}
+# variable "template_type" {
+#     type = string
+#     description = "frontend or backend"
+# }
 
 variable "template_subnet_id" {
     type = string
@@ -32,6 +32,27 @@ variable "bastion_ip" {
 variable "bastion_user" {
     type = string
 }
-variable "template_private_key_file_path" {
+# variable "template_private_key_file_path" {
+#     type = string
+# }
+variable "playbook_path" {
     type = string
 }
+variable "efs_dns_name" {
+    type = string
+}
+variable "db_instance_endpoint" {
+    type = string
+}
+variable "rds_db_name" {
+    type = string
+}
+variable "rds_username" {
+    type = string
+}
+variable "rds_password" {
+    type = string
+}
+
+
+

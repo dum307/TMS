@@ -1,132 +1,132 @@
-resource "aws_instance" "backend_image" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id = module.vpc.private_subnets[0]
-  key_name = var.key_name
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
+# resource "aws_instance" "backend_image" {
+#   ami           = data.aws_ami.ubuntu.id
+#   instance_type = "t2.micro"
+#   subnet_id = module.vpc.private_subnets[0]
+#   key_name = var.key_name
+#   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
 
-  tags = {
-    Name = "${var.tags.Name}-backend-template"
-  }
+#   tags = {
+#     Name = "${var.tags.Name}-backend-template"
+#   }
 
-connection {
-    type     = "ssh"
-    bastion_host = aws_instance.bastion.public_ip
-    bastion_user = "ubuntu"
-    bastion_private_key = file(var.private_key_file_path)
-    user     = "ubuntu"
-    private_key = file(var.private_key_file_path)
-    host     = self.private_ip
-  }
+# connection {
+#     type     = "ssh"
+#     bastion_host = aws_instance.bastion.public_ip
+#     bastion_user = "ubuntu"
+#     bastion_private_key = file(var.private_key_file_path)
+#     user     = "ubuntu"
+#     private_key = file(var.private_key_file_path)
+#     host     = self.private_ip
+#   }
 
-  provisioner "remote-exec" {
-    inline = ["echo 'Waiting for server to be initialized...'"]
-  }
+#   provisioner "remote-exec" {
+#     inline = ["echo 'Waiting for server to be initialized...'"]
+#   }
 
-  provisioner "local-exec" {
-   interpreter = ["/bin/bash", "-c"]
-   command = "ansible-playbook -i ${self.private_ip}, --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}' -o StrictHostKeyChecking=no \" --extra-vars 'efs_address=${module.efs.dns_name} wordpress_db_host=${module.db.db_instance_endpoint} wordpress_db_name=${var.rds_db_name} wordpress_db_user=${var.rds_username} wordpress_db_pass=${var.rds_password} ' ./playbooks/wp_back.yml"
-  }
-}
+#   provisioner "local-exec" {
+#    interpreter = ["/bin/bash", "-c"]
+#    command = "ansible-playbook -i ${self.private_ip}, --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}' -o StrictHostKeyChecking=no \" --extra-vars 'efs_address=${module.efs.dns_name} wordpress_db_host=${module.db.db_instance_endpoint} wordpress_db_name=${var.rds_db_name} wordpress_db_user=${var.rds_username} wordpress_db_pass=${var.rds_password} ' ./playbooks/wp_back.yml"
+#   }
+# }
 
-resource "aws_ami_from_instance" "backend" {
-  name               = "${var.tags.Name}-backend"
-  source_instance_id = aws_instance.backend_image.id
-}
-
-# resource "aws_ami_from_instance" "backend_new" {
-#   name               = "${var.tags.Name}-backend-new"
+# resource "aws_ami_from_instance" "backend" {
+#   name               = "${var.tags.Name}-backend"
 #   source_instance_id = aws_instance.backend_image.id
 # }
 
-resource "aws_launch_template" "backend" {
-  name = "${var.tags.Name}-backend"
+# # resource "aws_ami_from_instance" "backend_new" {
+# #   name               = "${var.tags.Name}-backend-new"
+# #   source_instance_id = aws_instance.backend_image.id
+# # }
 
-  # block_device_mappings {
-  #   device_name = "/dev/sdf"
+# resource "aws_launch_template" "backend" {
+#   name = "${var.tags.Name}-backend"
 
-  #   ebs {
-  #     volume_size = 20
-  #   }
-  # }
+#   # block_device_mappings {
+#   #   device_name = "/dev/sdf"
 
-  # capacity_reservation_specification {
-  #   capacity_reservation_preference = "open"
-  # }
+#   #   ebs {
+#   #     volume_size = 20
+#   #   }
+#   # }
 
-  # cpu_options {
-  #   core_count       = 4
-  #   threads_per_core = 2
-  # }
+#   # capacity_reservation_specification {
+#   #   capacity_reservation_preference = "open"
+#   # }
 
-  # credit_specification {
-  #   cpu_credits = "standard"
-  # }
+#   # cpu_options {
+#   #   core_count       = 4
+#   #   threads_per_core = 2
+#   # }
 
-  # disable_api_stop        = true
-  # disable_api_termination = true
+#   # credit_specification {
+#   #   cpu_credits = "standard"
+#   # }
 
-  # ebs_optimized = true
+#   # disable_api_stop        = true
+#   # disable_api_termination = true
 
-  # elastic_gpu_specifications {
-  #   type = "test"
-  # }
+#   # ebs_optimized = true
 
-  # elastic_inference_accelerator {
-  #   type = "eia1.medium"
-  # }
+#   # elastic_gpu_specifications {
+#   #   type = "test"
+#   # }
 
-  # iam_instance_profile {
-  #   name = "test"
-  # }
+#   # elastic_inference_accelerator {
+#   #   type = "eia1.medium"
+#   # }
 
-  image_id = aws_ami_from_instance.backend.id
-  instance_initiated_shutdown_behavior = "stop"
+#   # iam_instance_profile {
+#   #   name = "test"
+#   # }
 
-  # instance_market_options {
-  #   market_type = "spot"
-  # }
+#   image_id = aws_ami_from_instance.backend.id
+#   instance_initiated_shutdown_behavior = "stop"
 
-  instance_type = "t2.micro"
+#   # instance_market_options {
+#   #   market_type = "spot"
+#   # }
 
-  # kernel_id = "test"
+#   instance_type = "t2.micro"
 
-  key_name = var.key_name
+#   # kernel_id = "test"
 
-  # license_specification {
-  #   license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
-  # }
+#   key_name = var.key_name
 
-  # metadata_options {
-  #   http_endpoint               = "enabled"
-  #   http_tokens                 = "required"
-  #   http_put_response_hop_limit = 1
-  #   instance_metadata_tags      = "enabled"
-  # }
+#   # license_specification {
+#   #   license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
+#   # }
 
-  # monitoring {
-  #   enabled = true
-  # }
+#   # metadata_options {
+#   #   http_endpoint               = "enabled"
+#   #   http_tokens                 = "required"
+#   #   http_put_response_hop_limit = 1
+#   #   instance_metadata_tags      = "enabled"
+#   # }
 
-  # network_interfaces {
-  #   associate_public_ip_address = true
-  # }
+#   # monitoring {
+#   #   enabled = true
+#   # }
 
-  # placement {
-  #   availability_zone = "us-west-2a"
-  # }
+#   # network_interfaces {
+#   #   associate_public_ip_address = true
+#   # }
 
-  # ram_disk_id = "test"
+#   # placement {
+#   #   availability_zone = "us-west-2a"
+#   # }
 
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
+#   # ram_disk_id = "test"
 
-  tag_specifications {
-    resource_type = "instance"
+#   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
 
-    tags = {
-      Name = "${var.tags.Name}-backend"
-    }
-  }
+#   tag_specifications {
+#     resource_type = "instance"
 
-  # user_data = filebase64("${path.module}/example.sh")
-}
+#     tags = {
+#       Name = "${var.tags.Name}-backend"
+#     }
+#   }
+
+#   # user_data = filebase64("${path.module}/example.sh")
+# }

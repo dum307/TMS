@@ -29,104 +29,104 @@ connection {
   }
 }
 
-# resource "aws_ami_from_instance" "backend" {
-#   name               = "${var.tags.Name}-backend"
-#   source_instance_id = aws_instance.backend_image.id
-# }
+resource "aws_ami_from_instance" "backend" {
+  name               = "${var.tags.Name}-backend"
+  source_instance_id = aws_instance.backend_image.id
+}
 
 # resource "aws_ami_from_instance" "backend_new" {
 #   name               = "${var.tags.Name}-backend-new"
 #   source_instance_id = aws_instance.backend_image.id
 # }
 
-# resource "aws_launch_template" "backend" {
-#   name = "${var.tags.Name}-backend"
+resource "aws_launch_template" "backend" {
+  name = "${var.tags.Name}-backend"
 
-#   # block_device_mappings {
-#   #   device_name = "/dev/sdf"
+  # block_device_mappings {
+  #   device_name = "/dev/sdf"
 
-#   #   ebs {
-#   #     volume_size = 20
-#   #   }
-#   # }
+  #   ebs {
+  #     volume_size = 20
+  #   }
+  # }
 
-#   # capacity_reservation_specification {
-#   #   capacity_reservation_preference = "open"
-#   # }
+  # capacity_reservation_specification {
+  #   capacity_reservation_preference = "open"
+  # }
 
-#   # cpu_options {
-#   #   core_count       = 4
-#   #   threads_per_core = 2
-#   # }
+  # cpu_options {
+  #   core_count       = 4
+  #   threads_per_core = 2
+  # }
 
-#   # credit_specification {
-#   #   cpu_credits = "standard"
-#   # }
+  # credit_specification {
+  #   cpu_credits = "standard"
+  # }
 
-#   # disable_api_stop        = true
-#   # disable_api_termination = true
+  # disable_api_stop        = true
+  # disable_api_termination = true
 
-#   # ebs_optimized = true
+  # ebs_optimized = true
 
-#   # elastic_gpu_specifications {
-#   #   type = "test"
-#   # }
+  # elastic_gpu_specifications {
+  #   type = "test"
+  # }
 
-#   # elastic_inference_accelerator {
-#   #   type = "eia1.medium"
-#   # }
+  # elastic_inference_accelerator {
+  #   type = "eia1.medium"
+  # }
 
-#   # iam_instance_profile {
-#   #   name = "test"
-#   # }
+  # iam_instance_profile {
+  #   name = "test"
+  # }
 
-#   image_id = aws_ami_from_instance.backend_new.id
-#   instance_initiated_shutdown_behavior = "stop"
+  image_id = aws_ami_from_instance.backend.id
+  instance_initiated_shutdown_behavior = "stop"
 
-#   # instance_market_options {
-#   #   market_type = "spot"
-#   # }
+  # instance_market_options {
+  #   market_type = "spot"
+  # }
 
-#   instance_type = "t2.micro"
+  instance_type = "t2.micro"
 
-#   # kernel_id = "test"
+  # kernel_id = "test"
 
-#   key_name = var.key_name
+  key_name = var.key_name
 
-#   # license_specification {
-#   #   license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
-#   # }
+  # license_specification {
+  #   license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
+  # }
 
-#   # metadata_options {
-#   #   http_endpoint               = "enabled"
-#   #   http_tokens                 = "required"
-#   #   http_put_response_hop_limit = 1
-#   #   instance_metadata_tags      = "enabled"
-#   # }
+  # metadata_options {
+  #   http_endpoint               = "enabled"
+  #   http_tokens                 = "required"
+  #   http_put_response_hop_limit = 1
+  #   instance_metadata_tags      = "enabled"
+  # }
 
-#   # monitoring {
-#   #   enabled = true
-#   # }
+  # monitoring {
+  #   enabled = true
+  # }
 
-#   # network_interfaces {
-#   #   associate_public_ip_address = true
-#   # }
+  # network_interfaces {
+  #   associate_public_ip_address = true
+  # }
 
-#   # placement {
-#   #   availability_zone = "us-west-2a"
-#   # }
+  # placement {
+  #   availability_zone = "us-west-2a"
+  # }
 
-#   # ram_disk_id = "test"
+  # ram_disk_id = "test"
 
-#   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_http.id]
 
-#   tag_specifications {
-#     resource_type = "instance"
+  tag_specifications {
+    resource_type = "instance"
 
-#     tags = {
-#       Name = "${var.tags.Name}-backend"
-#     }
-#   }
+    tags = {
+      Name = "${var.tags.Name}-backend"
+    }
+  }
 
-#   # user_data = filebase64("${path.module}/example.sh")
-# }
+  # user_data = filebase64("${path.module}/example.sh")
+}

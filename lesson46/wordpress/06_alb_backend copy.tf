@@ -11,9 +11,9 @@ resource "aws_lb_target_group" "back" {
   port                 = 80
   protocol             = "HTTP"
   target_type          = "instance"
-#   health_check         = {
-#         matcher        = "200-399"
-#       }
+  health_check {
+    matcher            = "200-399"
+  }
 }
 
 resource "aws_lb_listener" "http" {

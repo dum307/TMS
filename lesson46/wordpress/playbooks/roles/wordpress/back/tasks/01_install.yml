@@ -31,14 +31,14 @@
   ansible.builtin.shell:
     cmd: 'mount -t {{ efs_type }} -o {{ efs_mount_opts }} {{ efs_address }}:/ {{ wordpress_www_folder }}'
 
-# - name: 'Mount AWS EFS to {{ wordpress_www_folder }}'
-#   ansible.posix.mount:
-#     src: '{{ efs_address }}'
-#     path: '{{ wordpress_www_folder }}'
-#     opts: '{{ efs_mount_opts }}'
-#     state: mounted
-#     fstype: '{{ efs_type }}'
-#   when: efs_address != ''
+- name: 'Mount AWS EFS to {{ wordpress_www_folder }} fstab'
+  ansible.posix.mount:
+    src: '{{ efs_address }}:/'
+    path: '{{ wordpress_www_folder }}'
+    opts: '{{ efs_mount_opts }}'
+    state: mounted
+    fstype: '{{ efs_type }}'
+  when: efs_address != ''
 
 - name: Download and Unarchive wordpress tar
   ansible.builtin.unarchive:

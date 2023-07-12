@@ -32,9 +32,9 @@ variable "bastion_ip" {
 variable "bastion_user" {
     type = string
 }
-# variable "template_private_key_file_path" {
-#     type = string
-# }
+variable "template_private_key_file_path" {
+    type = string
+}
 variable "playbook_path" {
     type = string
 }

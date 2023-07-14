@@ -13,6 +13,8 @@ module "template" {
   rds_db_name                    = "wordpress"
   rds_username                   = "admin"
   rds_password                   = "password"
+  aws_lb_back_dns_name           = local.aws_lb_back_dns_name
+  template_type                  = "backend"
 
   template_private_key_file_path = var.private_key_file_path
   template_key_name              = var.key_name

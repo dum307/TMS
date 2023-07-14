@@ -1,7 +1,7 @@
-# variable "template_type" {
-#     type = string
-#     description = "frontend or backend"
-# }
+variable "template_type" {
+    type = string
+    description = "frontend or backend"
+}
 
 variable "template_subnet_id" {
     type = string
@@ -40,19 +40,33 @@ variable "playbook_path" {
 }
 variable "efs_dns_name" {
     type = string
+    default = ""
 }
 variable "db_instance_endpoint" {
     type = string
+    default = ""
 }
 variable "rds_db_name" {
     type = string
+    default = ""
 }
 variable "rds_username" {
     type = string
+    default = ""
 }
 variable "rds_password" {
     type = string
+    default = ""
 }
-
-
-
+variable "aws_lb_back_dns_name" {
+    type = string
+    default = ""
+}
+variable "nginx_listen_port" {
+    type = string
+    default = ""
+}
+variable "template_associate_public_ip_address" {
+    type = string
+    default = "false"
+}

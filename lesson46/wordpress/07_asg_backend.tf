@@ -44,6 +44,9 @@ module "asg" {
   launch_template        = module.template.launch_template_name
 
   target_group_arns = [local.target_group_back_arn]
+
+  # target_group_arns = module.alb.target_group_arns
+
 #   update_default_version      = true
 
 #   image_id          = "ami-ebd02392"

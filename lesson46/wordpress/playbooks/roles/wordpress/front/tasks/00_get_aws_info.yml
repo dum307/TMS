@@ -8,12 +8,12 @@
       region: '{{ aws_region }}'
     register: alb_result
 
-  - name: Set facts
-    delegate_to: localhost
-    ansible.builtin.set_fact:
-      nginx_wordpress_conf_wordpress_back_lb_url: "{{ alb_result | json_query('load_balancers[*].dns_name') | first }}"
+  # - name: Set facts
+  #   delegate_to: localhost
+  #   ansible.builtin.set_fact:
+  #     nginx_wordpress_conf_wordpress_back_lb_url: "{{ alb_result | json_query('load_balancers[*].dns_name') | first }}"
 
-  - ansible.builtin.debug:
-      var: nginx_wordpress_conf_wordpress_back_lb_url
-    delegate_to: localhost
+  # - ansible.builtin.debug:
+  #     var: nginx_wordpress_conf_wordpress_back_lb_url
+  #   delegate_to: localhost
       

@@ -1,15 +1,15 @@
-module "asg" {
+module "asg_front" {
   source  = "terraform-aws-modules/autoscaling/aws"
 
   # Autoscaling group
-  name = "${var.tags.Name}-backend"
+  name = "${var.tags.Name}-frontend"
 
   min_size                  = 2
   max_size                  = 3
   desired_capacity          = 2
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
-  vpc_zone_identifier       = module.vpc.private_subnets
+  vpc_zone_identifier       = module.vpc.public_subnets
 
 #   initial_lifecycle_hooks = [
 #     {
@@ -41,9 +41,9 @@ module "asg" {
 
   # Launch template
   create_launch_template = false
-  launch_template        = module.template_backend.launch_template_name
+  launch_template        = module.template_frontend.launch_template_name
 
-  target_group_arns = [local.target_group_back_arn]
+  target_group_arns = [local.target_group_front_arn]
 
   # target_group_arns = module.alb.target_group_arns
 

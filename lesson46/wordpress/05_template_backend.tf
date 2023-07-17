@@ -1,4 +1,4 @@
-module "template" {
+module "template_backend" {
   source = "./modules/template"
 
   template_subnet_id             = module.vpc.private_subnets[0]

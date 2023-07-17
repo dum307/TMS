@@ -24,11 +24,25 @@ connection {
   }
 
   provisioner "local-exec" {
-    command = var.bastion_use && var.template_type == "backend" ? "ansible-playbook -i ${self.private_ip}, --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${var.bastion_ip}' -o StrictHostKeyChecking=no \" --extra-vars 'efs_address=${var.efs_dns_name} wordpress_db_host=${var.db_instance_endpoint} wordpress_db_name=${var.rds_db_name} wordpress_db_user=${var.rds_username} wordpress_db_pass=${var.rds_password} ' ${var.playbook_path}" : null
+    command = <<EOT
+    var.bastion_use && var.template_type == "backend" ? 
+    "ansible-playbook -i ${self.private_ip}, 
+    --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${var.bastion_ip}' 
+    -o StrictHostKeyChecking=no \" --extra-vars 'efs_address=${var.efs_dns_name} 
+    wordpress_db_host=${var.db_instance_endpoint} wordpress_db_name=${var.rds_db_name} 
+    wordpress_db_user=${var.rds_username} wordpress_db_pass=${var.rds_password} ' 
+    ${var.playbook_path}" : "sleep 1"
+    EOT
   }
 
   provisioner "local-exec" {
-    command = var.bastion_use && var.template_type == "frontend" ? "ansible-playbook -i ${self.private_ip}, --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${var.bastion_ip}' -o StrictHostKeyChecking=no \" --extra-vars 'nginx_wordpress_conf_wordpress_back_lb_url=${var.aws_lb_back_dns_name} wordpress_nginx_conf_listen_port=${var.nginx_listen_port} wordpress_nginx_conf_server_name=${self.public_ip} ' ${var.playbook_path}" : null
+    command = var.bastion_use && var.template_type == <<EOT
+    "frontend" ? "ansible-playbook -i ${self.private_ip}, 
+    --ssh-common-args \" -o ProxyCommand='ssh -o StrictHostKeyChecking=no -W %h:%p -q ubuntu@${var.bastion_ip}' 
+    -o StrictHostKeyChecking=no \" --extra-vars 'nginx_wordpress_conf_wordpress_back_lb_url=${var.aws_lb_back_dns_name} 
+    wordpress_nginx_conf_listen_port=${var.nginx_listen_port} wordpress_nginx_conf_server_name=${self.public_ip} ' 
+    ${var.playbook_path}" : "sleep 1"
+    EOT
   }
 
 }
@@ -57,4 +71,20 @@ resource "aws_launch_template" "this" {
       Name = var.template_tag_name
     }
   }
+}
+
+locals {
+  instance_template_id = aws_instance.this.id
+}
+
+resource "null_resource" "destroy_instance_after_ami" {
+  triggers = {
+    ami_id = aws_ami_from_instance.this.id
+  }
+# можно удалить исходный инстанс командой "aws ec2 terminate-instances --instance-ids ${local.instance_template_id}"
+  provisioner "local-exec" {
+    command = "aws ec2 stop-instances --instance-ids ${local.instance_template_id}"
+  }
+
+  depends_on = [aws_ami_from_instance.this]
 }

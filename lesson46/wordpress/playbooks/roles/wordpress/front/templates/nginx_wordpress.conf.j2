@@ -1,0 +1,12 @@
+server {
+    listen {{ nginx_wordpress_conf_listen_port }};
+    server_name {{ nginx_wordpress_conf_server_name }};
+
+    location / {
+        proxy_pass http://{{ nginx_wordpress_conf_wordpress_back_lb_url }};
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host:$server_port;
+    }
+}

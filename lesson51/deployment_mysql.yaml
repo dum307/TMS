@@ -11,6 +11,26 @@ spec:
     app: wordpress
   clusterIP: None
 ---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mysql-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: wordpress-mysql
+  policyTypes:
+    - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: wordpress
+    ports:
+      - protocol: TCP
+        port: 3306
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -49,7 +69,7 @@ spec:
           value: password
           # valueFrom:
           #   secretKeyRef:
-          #     name: mysql-pass
+          #     name: mysql-root
           #     key: password
         - name: MYSQL_DATABASE
           value: wordpress

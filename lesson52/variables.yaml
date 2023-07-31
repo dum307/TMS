@@ -1,0 +1,13 @@
+image:
+  wp:
+    tag: "6.2.1-apache"
+  db:
+    tag: "8.0"
+
+secrets:
+  db: d29yZHByZXNz
+  user: d29yZHByZXNz
+  password: cGFzc3dvcmQ=
+  rootpassword: cGFzc3dvcmQ=
+
+namespace: dev

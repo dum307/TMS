@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploymentWordpressName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deploymentWordpressName }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploymentWordpressName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploymentWordpressName }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.wp.name }}:{{ .Values.image.wp.tag }}"
+          env:  
+          - name: WORDPRESS_DB_HOST
+            value: {{ .Values.statefulsetMysqlName }}
+          - name: WORDPRESS_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: password
+          - name: WORDPRESS_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: user
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: persistent-storage-{{ .Values.deploymentWordpressName }}
+            mountPath: {{ .Values.mountPath.wordpress }}
+      volumes:
+      - name: persistent-storage-{{ .Values.deploymentWordpressName }}
+        persistentVolumeClaim:
+          claimName: pvc-{{ .Values.deploymentWordpressName }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Values.deploymentWordpressName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deploymentWordpressName }}
+spec:
+  storageClassName: pv-{{ .Values.deploymentWordpressName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.deploymentWordpressName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deploymentWordpressName }}
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    app: {{ .Values.deploymentWordpressName }}
+  type: ClusterIP
+---

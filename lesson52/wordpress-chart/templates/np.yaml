@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np-{{ .Values.statefulsetMysqlName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Values.statefulsetMysqlName }}
+  policyTypes:
+    - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: {{ .Values.deploymentWordpressName }}
+    ports:
+      - protocol: TCP
+        port: {{ .Values.mysqlport }}

@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.statefulsetMysqlName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.statefulsetMysqlName }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.statefulsetMysqlName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.statefulsetMysqlName }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.StatefulSet.terminationGracePeriodSeconds }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.db.name }}:{{ .Values.image.db.tag }}"
+          ports:
+            - containerPort: {{ .Values.mysqlport }}
+          env:  
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: rootpassword
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: db
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.statefulsetMysqlName }}
+                key: password
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: persistent-storage-{{ .Values.statefulsetMysqlName }}
+            mountPath: {{ .Values.mountPath.mysql }}
+      volumes:
+      - name: persistent-storage-{{ .Values.statefulsetMysqlName }}
+        persistentVolumeClaim:
+          claimName: pvc-{{ .Values.statefulsetMysqlName }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Values.statefulsetMysqlName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.statefulsetMysqlName }}
+spec:
+  storageClassName: pv-{{ .Values.statefulsetMysqlName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.statefulsetMysqlName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.statefulsetMysqlName }}
+spec:
+  ports:
+    - port: {{ .Values.mysqlport }}
+  selector:
+    app: {{ .Values.statefulsetMysqlName }}
+  clusterIP: None

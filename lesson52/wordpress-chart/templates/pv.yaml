@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-{{ .Values.deploymentWordpressName }}
+spec:
+  capacity:
+    storage: {{ .Values.storage }}
+  volumeMode: {{ .Values.volume.volumeMode }}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.volume.persistentVolumeReclaimPolicy }}
+  storageClassName: pv-{{ .Values.deploymentWordpressName }}
+  hostPath:
+    path:  {{ .Values.mountPath.host }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-{{ .Values.statefulsetMysqlName }}
+spec:
+  capacity:
+    storage: {{ .Values.storage }}
+  volumeMode: {{ .Values.volume.volumeMode }}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.volume.persistentVolumeReclaimPolicy }}
+  storageClassName: pv-{{ .Values.statefulsetMysqlName }}
+  hostPath:
+    path:  {{ .Values.mountPath.host }}

@@ -1,0 +1,24 @@
+--- Start LOG
+--- 20230805-1952 :: Begin install. (NS: default, TAG: monitoring) ---
+--- Installing: ./k8s-manifests/post/service.yaml
+service/post created
+--- Installing: ./k8s-manifests/post/deployment.yaml
+deployment.apps/post created
+--- Installing: ./k8s-manifests/post/configMap.yaml
+configmap/post created
+--- Installing: ./k8s-manifests/comment/service.yaml
+service/comment created
+--- Installing: ./k8s-manifests/comment/deployment.yaml
+deployment.apps/comment created
+--- Installing: ./k8s-manifests/comment/configMap.yaml
+configmap/comment created
+--- Installing: ./k8s-manifests/ui/service.yaml
+service/ui created
+--- Installing: ./k8s-manifests/ui/deployment.yaml
+deployment.apps/ui created
+--- Installing: ./k8s-manifests/ui/configMap.yaml
+configmap/ui created
+--- Installing: ./k8s-manifests/post-db/service.yaml
+service/post-db created
+--- Installing: ./k8s-manifests/post-db/deployment.yaml
+deployment.apps/post-db created

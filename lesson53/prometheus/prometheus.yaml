@@ -1,0 +1,108 @@
+# alertmanager config
+alertmanager:
+  ingress:
+    enabled: true
+    hosts:
+      - alertmanager
+    paths:
+      - /
+  config:
+    global:
+      slack_api_url: 'https://hooks.slack.com/services/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'
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+      receiver: 'default-receiver'
+      routes:
+      - match:
+          alertname: DeadMansSwitch
+        receiver: 'null'
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'cluster', 'service']
+    receivers:
+    - name: 'default-receiver'
+      slack_configs:
+      - channel: '#devops' # Ваш канал Slack для оповещений
+        username: 'Grafana'  # Имя, отображаемое в оповещении
+        color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+        title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Prometheus Event Notification'
+        title_link: '{{ template "slack.default.titlelink" . }}'
+        pretext: '{{ .CommonAnnotations.summary }}'
+        text: |-
+          {{ range .Alerts }}
+            {{- if .Annotations.summary }}*Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`{{- end }}
+            *Description:* {{ .Annotations.description }}{{ .Annotations.message }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>{{ if or .Annotations.runbook .Annotations.runbook_url }}
+            *Runbook:* <{{ .Annotations.runbook }}{{ .Annotations.runbook_url }}|:spiral_note_pad:>{{ end }}
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+        fallback: '{{ template "slack.default.fallback" . }}'
+        icon_emoji: '{{ template "slack.default.iconemoji" . }}'
+        icon_url: '{{ template "slack.default.iconurl" . }}'
+        send_resolved: true
+    - name: 'null'
+
+# grafana config
+grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - grafana
+
+# prometheus config
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus
+    paths:
+      - /
+  prometheusSpec:
+    additionalScrapeConfigs: |
+      - job_name: 'reddit'
+        static_configs:
+          - targets:
+            - 'ui.default.svc.cluster.local:9292'
+            - 'post.default.svc.cluster.local:5000'
+            - 'comment.default.svc.cluster.local:9292'
+  
+      - job_name: 'blackbox'
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+          - targets:
+            - http://ui.default.svc.cluster.local:9292
+            - http://post.default.svc.cluster.local:5000
+            - http://comment.default.svc.cluster.local:9292
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: blackbox-prometheus-blackbox-exporter.default.svc.cluster.local:9115
+
+
+
+additionalPrometheusRulesMap:
+  myrule:
+    groups:
+    - name: alert.rules
+      rules:
+      - alert: Health unavailable
+        expr: ui_health == 0 # любое PromQL выражение
+        for: 1m # В течении какого времени, по умолчанию 0
+        labels: # Дополнительные метки
+          severity: warning
+        annotations:
+          description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute'
+          summary: 'Instance {{ $labels.instance }} down'

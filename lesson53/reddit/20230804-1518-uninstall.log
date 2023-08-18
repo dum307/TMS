@@ -1,0 +1,24 @@
+--- Start LOG
+--- 20230804-1518 :: Begin uninstall. (NS: default, TAG: monitoring) ---
+--- Uninstalling: ./k8s-manifests/post/service.yaml
+service "post" deleted
+--- Uninstalling: ./k8s-manifests/post/deployment.yaml
+deployment.apps "post" deleted
+--- Uninstalling: ./k8s-manifests/post/configMap.yaml
+configmap "post" deleted
+--- Uninstalling: ./k8s-manifests/comment/service.yaml
+service "comment" deleted
+--- Uninstalling: ./k8s-manifests/comment/deployment.yaml
+deployment.apps "comment" deleted
+--- Uninstalling: ./k8s-manifests/comment/configMap.yaml
+configmap "comment" deleted
+--- Uninstalling: ./k8s-manifests/ui/service.yaml
+service "ui" deleted
+--- Uninstalling: ./k8s-manifests/ui/deployment.yaml
+deployment.apps "ui" deleted
+--- Uninstalling: ./k8s-manifests/ui/configMap.yaml
+configmap "ui" deleted
+--- Uninstalling: ./k8s-manifests/post-db/service.yaml
+service "post-db" deleted
+--- Uninstalling: ./k8s-manifests/post-db/deployment.yaml
+deployment.apps "post-db" deleted
